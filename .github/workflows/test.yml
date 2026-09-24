@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version: stable
       - name: gofmt
         if: runner.os != 'Windows'
         run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version: stable
       - run: go test ./internal/vscode/ -run '^$' -fuzz '^FuzzApply$' -fuzztime 60s
       - run: go test ./internal/vscode/ -run '^$' -fuzz '^FuzzParseKeybindings$' -fuzztime 30s
       - run: go test ./internal/keymap/ -run '^$' -fuzz '^FuzzParsers$' -fuzztime 30s
@@ -43,5 +43,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version: stable
       - run: make dist

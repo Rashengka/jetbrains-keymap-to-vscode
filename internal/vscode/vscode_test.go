@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"testing"
@@ -176,7 +177,8 @@ func TestWriteBacksUpBeforeOverwriting(t *testing.T) {
 	if b, _ := os.ReadFile(res.Backup); !bytes.Equal(b, orig) {
 		t.Error("backup content differs from the original")
 	}
-	if st, _ := os.Stat(path); st.Mode().Perm() != 0o600 {
+	// Windows has no Unix permission bits to keep.
+	if st, _ := os.Stat(path); runtime.GOOS != "windows" && st.Mode().Perm() != 0o600 {
 		t.Errorf("permissions not kept: %v", st.Mode())
 	}
 	// A second write in the same second must not overwrite the first backup.

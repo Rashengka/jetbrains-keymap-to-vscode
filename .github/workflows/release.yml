@@ -23,7 +23,7 @@ jobs:
       - run: git fetch --force origin "refs/tags/${GITHUB_REF_NAME}:refs/tags/${GITHUB_REF_NAME}"
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version: stable
       - run: go vet ./...
       - run: go test ./...
       - name: Check tag
