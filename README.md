@@ -170,7 +170,16 @@ the same platform through Settings Sync.
 
 ## Installing
 
-With Go 1.22 or newer:
+Download the binary for your system from the
+[latest release](https://github.com/Rashengka/jetbrains-keymap-to-vscode/releases/latest)
+and check it against `SHA256SUMS`. On macOS, remove the quarantine flag of a
+downloaded binary before the first run:
+
+```sh
+xattr -d com.apple.quarantine jetbrains-keymap-to-vscode-*-darwin-arm64
+```
+
+Or with Go 1.22 or newer:
 
 ```sh
 go install github.com/Rashengka/jetbrains-keymap-to-vscode@latest
@@ -247,6 +256,25 @@ comes from the extension:
 - Actions that only work inside a JetBrains tool window (for example dropping
   a stash) are not mapped: the VS Code command would act on the same key
   everywhere.
+
+## Releases
+
+The version number lives only in `internal/release/VERSION` and is embedded
+into the binary (`jetbrains-keymap-to-vscode version`). A release is an
+annotated tag `vX.Y.Z` whose message describes the release:
+
+```sh
+go run ./tools/release <patch|minor|major|X.Y.Z> "what changed"
+git push origin main
+git push origin vX.Y.Z
+```
+
+The first command refuses a working tree with uncommitted changes, writes
+`VERSION`, commits it and creates the tag, both with the message
+`vX.Y.Z: what changed`. Pushing the tag starts the release workflow. The
+workflow runs the tests, checks that the tag matches `VERSION` and carries a
+description (`go run ./tools/release check`), builds the binaries with
+`SHA256SUMS`, and creates the GitHub release with them attached.
 
 ## Known limitations
 

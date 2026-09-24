@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"runtime/debug"
 	"strconv"
 	"strings"
 	"time"
@@ -21,10 +22,9 @@ import (
 	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/ide"
 	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/keymap"
 	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/layout"
+	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/release"
 	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/vscode"
 )
-
-var version = "dev"
 
 const usage = `jetbrains-keymap-to-vscode copies keyboard shortcuts from a JetBrains IDE to VS Code.
 
@@ -58,7 +58,7 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	case "restore":
 		err = cmdRestore(args[1:], stdout, stderr)
 	case "version", "--version":
-		fmt.Fprintln(stdout, version)
+		fmt.Fprintln(stdout, versionString())
 	case "help", "-h", "--help":
 		fmt.Fprint(stdout, usage)
 	default:
@@ -73,6 +73,32 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 		return 1
 	}
 	return 0
+}
+
+// versionString is the version from VERSION plus the commit, when Go recorded it.
+func versionString() string {
+	v := release.Version()
+	if info, ok := debug.ReadBuildInfo(); ok {
+		rev, dirty := "", false
+		for _, s := range info.Settings {
+			switch s.Key {
+			case "vcs.revision":
+				rev = s.Value
+			case "vcs.modified":
+				dirty = s.Value == "true"
+			}
+		}
+		if len(rev) > 12 {
+			rev = rev[:12]
+		}
+		if rev != "" {
+			v += "+" + rev
+			if dirty {
+				v += ".dirty"
+			}
+		}
+	}
+	return v
 }
 
 type detectFlags struct {
