@@ -13,6 +13,14 @@ import (
 const fxDefault = `<keymap version="1" name="$default">
   <action id="EditorDuplicate"><keyboard-shortcut first-keystroke="control D"/></action>
   <action id="GotoClass"><keyboard-shortcut first-keystroke="control N"/></action>
+  <action id="CommentByLineComment"><keyboard-shortcut first-keystroke="control SLASH"/></action>
+  <action id="ReformatCode"><keyboard-shortcut first-keystroke="control alt L"/></action>
+  <action id="GotoDeclaration"><keyboard-shortcut first-keystroke="control B"/><mouse-shortcut keystroke="control button1"/></action>
+  <action id="FindInPath"><keyboard-shortcut first-keystroke="control shift F"/></action>
+  <action id="HideActiveWindow"><keyboard-shortcut first-keystroke="shift ESCAPE"/></action>
+  <action id="Console.Jdbc.Execute"><keyboard-shortcut first-keystroke="control ENTER"/></action>
+  <action id="SomethingUnreviewed"><keyboard-shortcut first-keystroke="control shift U"/></action>
+  <action id="CollapseAllRegions"><keyboard-shortcut first-keystroke="control K" second-keystroke="control 0"/></action>
 </keymap>`
 
 const fxMac = `<keymap version="1" name="Mac OS X 10.5+" parent="$default">

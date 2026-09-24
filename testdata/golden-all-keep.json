@@ -1,0 +1,31 @@
+// my file
+[
+  { "key": "ctrl+alt+x", "command": "my.command" }, // keep me
+  // >>> jetbrains-keymap-to-vscode generated from TestIDE 2026.1, keymap "Custom", scope all, layout Czech-QWERTY; edits inside this block are replaced on the next run
+  // keep for VS Code: cmd+[Digit2], recommended
+  // CollapseAllRegions (meta k, meta 0)
+  {
+    "key": "cmd+k cmd+0",
+    "command": "editor.foldAll",
+    "when": "editorTextFocus && foldingEnabled"
+  },
+  // CommentByLineComment (meta slash)
+  {
+    "key": "cmd+/",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  // ReformatCode (alt meta l)
+  {
+    "key": "alt+cmd+l",
+    "command": "editor.action.formatSelection",
+    "when": "editorHasDocumentSelectionFormattingProvider && editorHasSelection && editorTextFocus && !editorReadonly"
+  },
+  // ReformatCode (alt meta l)
+  {
+    "key": "alt+cmd+l",
+    "command": "editor.action.formatDocument",
+    "when": "editorHasDocumentFormattingProvider && !editorHasSelection && editorTextFocus && !editorReadonly"
+  }
+  // <<< jetbrains-keymap-to-vscode
+]

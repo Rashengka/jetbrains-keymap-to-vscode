@@ -1,0 +1,57 @@
+// my file
+[
+  { "key": "ctrl+alt+x", "command": "my.command" }, // keep me
+  // >>> jetbrains-keymap-to-vscode generated from TestIDE 2026.1, keymap "Custom", scope all, layout Czech-QWERTY; edits inside this block are replaced on the next run
+  // CollapseAllRegions (meta k, meta 0)
+  {
+    "key": "cmd+k cmd+0",
+    "command": "editor.foldAll",
+    "when": "editorTextFocus && foldingEnabled"
+  },
+  // CommentByLineComment (meta slash)
+  {
+    "key": "cmd+/",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  // EditorDuplicate (shift meta d)
+  {
+    "key": "shift+cmd+d",
+    "command": "editor.action.copyLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  // FindInPath (shift meta f)
+  {
+    "key": "shift+cmd+f",
+    "command": "workbench.action.findInFiles"
+  },
+  // GotoClass (meta o)
+  {
+    "key": "cmd+o",
+    "command": "workbench.action.showAllSymbols"
+  },
+  // GotoDeclaration (meta b)
+  {
+    "key": "cmd+b",
+    "command": "editor.action.revealDefinition",
+    "when": "editorHasDefinitionProvider && editorTextFocus"
+  },
+  // GotoFile (meta #100011b)
+  {
+    "key": "cmd+[Digit2]",
+    "command": "workbench.action.quickOpen"
+  },
+  // ReformatCode (alt meta l)
+  {
+    "key": "alt+cmd+l",
+    "command": "editor.action.formatSelection",
+    "when": "editorHasDocumentSelectionFormattingProvider && editorHasSelection && editorTextFocus && !editorReadonly"
+  },
+  // ReformatCode (alt meta l)
+  {
+    "key": "alt+cmd+l",
+    "command": "editor.action.formatDocument",
+    "when": "editorHasDocumentFormattingProvider && !editorHasSelection && editorTextFocus && !editorReadonly"
+  }
+  // <<< jetbrains-keymap-to-vscode
+]

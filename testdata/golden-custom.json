@@ -1,0 +1,17 @@
+// my file
+[
+  { "key": "ctrl+alt+x", "command": "my.command" }, // keep me
+  // >>> jetbrains-keymap-to-vscode generated from TestIDE 2026.1, keymap "Custom", scope custom, layout Czech-QWERTY; edits inside this block are replaced on the next run
+  // EditorDuplicate (shift meta d)
+  {
+    "key": "shift+cmd+d",
+    "command": "editor.action.copyLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  // GotoFile (meta #100011b)
+  {
+    "key": "cmd+[Digit2]",
+    "command": "workbench.action.quickOpen"
+  }
+  // <<< jetbrains-keymap-to-vscode
+]
