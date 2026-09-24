@@ -26,10 +26,12 @@ jobs:
           go-version: stable
       - run: go vet ./...
       - run: go test ./...
+      # Notes go outside the checkout: a file in the tree would mark the
+      # build as modified ("+<commit>.dirty" in the version).
       - name: Check tag
-        run: go run ./tools/release check "$GITHUB_REF_NAME" notes.txt
+        run: go run ./tools/release check "$GITHUB_REF_NAME" "$RUNNER_TEMP/notes.txt"
       - run: make dist
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --notes-file notes.txt --verify-tag
+        run: gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/notes.txt" --verify-tag
