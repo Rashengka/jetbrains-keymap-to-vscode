@@ -31,7 +31,7 @@ const userFile = `// Place your key bindings in this file to override the defaul
 `
 
 func TestApplyInsertsBlockAndKeepsUserContent(t *testing.T) {
-	out, err := Apply([]byte(userFile), sample, "test header")
+	out, err := Apply([]byte(userFile), sample, "test header", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,18 +54,18 @@ func TestApplyInsertsBlockAndKeepsUserContent(t *testing.T) {
 }
 
 func TestApplyIsIdempotentAndReplacesBlock(t *testing.T) {
-	once, err := Apply([]byte(userFile), sample, "h")
+	once, err := Apply([]byte(userFile), sample, "h", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	twice, err := Apply(once, sample, "h")
+	twice, err := Apply(once, sample, "h", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !bytes.Equal(once, twice) {
 		t.Errorf("second run changed the file:\n%s\n---\n%s", once, twice)
 	}
-	smaller, err := Apply(once, sample[:1], "h")
+	smaller, err := Apply(once, sample[:1], "h", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -73,7 +73,7 @@ func TestApplyIsIdempotentAndReplacesBlock(t *testing.T) {
 	if len(list) != 3 {
 		t.Errorf("want 3 bindings after replacing block, got %d", len(list))
 	}
-	empty, err := Apply(once, nil, "h")
+	empty, err := Apply(once, nil, "h", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -84,13 +84,13 @@ func TestApplyIsIdempotentAndReplacesBlock(t *testing.T) {
 }
 
 func TestApplyBlockInTheMiddle(t *testing.T) {
-	once, err := Apply([]byte("[\n  {\"key\": \"a\", \"command\": \"x\"}\n]\n"), sample, "")
+	once, err := Apply([]byte("[\n  {\"key\": \"a\", \"command\": \"x\"}\n]\n"), sample, "", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	// The user adds a binding after the block by hand.
 	withAfter := strings.Replace(string(once), EndMarker+"\n", EndMarker+"\n  {\"key\": \"b\", \"command\": \"y\"}\n", 1)
-	again, err := Apply([]byte(withAfter), sample, "")
+	again, err := Apply([]byte(withAfter), sample, "", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -105,7 +105,7 @@ func TestApplyBlockInTheMiddle(t *testing.T) {
 
 func TestApplyEmptyAndCommentOnlyFiles(t *testing.T) {
 	for _, src := range []string{"", "  \n", "// only a comment\n"} {
-		out, err := Apply([]byte(src), sample, "")
+		out, err := Apply([]byte(src), sample, "", nil)
 		if err != nil {
 			t.Fatalf("%q: %v", src, err)
 		}
@@ -121,7 +121,7 @@ func TestApplyEmptyAndCommentOnlyFiles(t *testing.T) {
 
 func TestApplyKeepsCRLF(t *testing.T) {
 	src := strings.ReplaceAll(userFile, "\n", "\r\n")
-	out, err := Apply([]byte(src), sample, "")
+	out, err := Apply([]byte(src), sample, "", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -138,7 +138,7 @@ func TestApplyRefusesBrokenInput(t *testing.T) {
 		`[ {"key": "a", "command": "b" `,                     // truncated
 	}
 	for _, src := range bad {
-		if _, err := Apply([]byte(src), sample, ""); err == nil {
+		if _, err := Apply([]byte(src), sample, "", nil); err == nil {
 			t.Errorf("expected error for %q", src)
 		}
 	}
@@ -146,7 +146,7 @@ func TestApplyRefusesBrokenInput(t *testing.T) {
 
 func TestMarkerInsideStringIsIgnored(t *testing.T) {
 	src := `[ {"key": "a", "command": "b", "when": "` + StartMarker + `"} ]`
-	out, err := Apply([]byte(src), sample, "")
+	out, err := Apply([]byte(src), sample, "", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -305,5 +305,22 @@ func TestSameBindingsDetectsChanges(t *testing.T) {
 	}
 	if !sameBindings(a, []RawBinding{{Key: "a", Command: "x", Args: []byte(`{ "k":1 }`)}}) {
 		t.Error("formatting of args must not matter")
+	}
+}
+
+func TestKeepLineRoundTrip(t *testing.T) {
+	out, err := Apply([]byte(userFile), sample, "h", []string{"cmd+g", "cmd+[Digit2]"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := ReadKeep(out); len(got) != 2 || got[0] != "cmd+g" || got[1] != "cmd+[Digit2]" {
+		t.Errorf("got %v", got)
+	}
+	again, _ := Apply(out, sample, "h", nil)
+	if ReadKeep(again) != nil {
+		t.Error("an empty keep list removes the line")
+	}
+	if list, _ := ParseKeybindings(out); len(list) != 4 {
+		t.Errorf("keep line must stay a comment: %d bindings", len(list))
 	}
 }

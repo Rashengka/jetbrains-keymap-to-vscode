@@ -358,3 +358,98 @@ func findConflicts(bs []Binding) []Conflict {
 	sort.Slice(out, func(i, j int) bool { return out[i].Key < out[j].Key })
 	return out
 }
+
+// usKeys are keys VS Code accepts by name; everything else is a character
+// that depends on the keyboard layout.
+var usKeys = map[string]bool{
+	"-": true, "=": true, "[": true, "]": true, "\\": true, ";": true, "'": true,
+	"`": true, ",": true, ".": true, "/": true,
+}
+
+// NormalizeUserKey turns a key typed by the user (for --keep-key) into the form
+// the converter generates, so both can be compared. It accepts VS Code syntax
+// ("shift+cmd+g", "cmd+[Digit2]"), common modifier names ("command", "option")
+// and layout characters ("cmd+ě"), which are resolved to the physical key
+// through lay, the same way shortcuts from JetBrains are.
+func NormalizeUserKey(s string, p Platform, lay *layout.Layout) (string, error) {
+	var strokes []string
+	for _, stroke := range strings.Fields(s) {
+		has := map[string]bool{}
+		key := ""
+		parts := strings.Split(stroke, "+")
+		// "cmd++" means Cmd and the + key.
+		if strings.HasSuffix(stroke, "++") {
+			parts = append(strings.Split(strings.TrimSuffix(stroke, "++"), "+"), "+")
+		}
+		for i, part := range parts {
+			low := strings.ToLower(part)
+			switch low {
+			case "ctrl", "control":
+				has["ctrl"] = true
+				continue
+			case "shift":
+				has["shift"] = true
+				continue
+			case "alt", "option", "opt":
+				has["alt"] = true
+				continue
+			case "cmd", "command", "meta", "win", "super":
+				has["cmd"] = true
+				continue
+			}
+			if i != len(parts)-1 || key != "" {
+				return "", fmt.Errorf("%q: unknown modifier %q", s, part)
+			}
+			key = part
+		}
+		if key == "" {
+			return "", fmt.Errorf("%q: no key", s)
+		}
+		switch r := []rune(key); {
+		case strings.HasPrefix(key, "[") && strings.HasSuffix(key, "]"):
+			// scan code, keep as written
+		case len(r) == 1 && (r[0] >= 'a' && r[0] <= 'z' || r[0] >= 'A' && r[0] <= 'Z' || r[0] >= '0' && r[0] <= '9'):
+			key = strings.ToLower(key)
+		case len(r) == 1 && usKeys[key]:
+		case len(r) == 1:
+			if lay == nil {
+				return "", fmt.Errorf("%q: %q depends on the keyboard layout; pass --layout or write the physical key, e.g. [Digit2]", s, key)
+			}
+			pk, ok := lay.Find(r[0])
+			if !ok {
+				return "", fmt.Errorf("%q: %q is not on the %s keyboard layout", s, key, lay.Name())
+			}
+			key = "[" + pk.Code + "]"
+			if pk.Shift {
+				has["shift"] = true
+			}
+		default:
+			key = strings.ToLower(key)
+			if v, ok := namedKeys[key]; ok {
+				key = v
+			}
+		}
+		var out []string
+		for _, m := range []string{"ctrl", "shift", "alt", "cmd"} {
+			if !has[m] {
+				continue
+			}
+			if m == "cmd" {
+				switch p {
+				case Mac:
+					m = "cmd"
+				case Windows:
+					m = "win"
+				default:
+					m = "meta"
+				}
+			}
+			out = append(out, m)
+		}
+		strokes = append(strokes, strings.Join(append(out, key), "+"))
+	}
+	if len(strokes) == 0 {
+		return "", fmt.Errorf("empty key")
+	}
+	return strings.Join(strokes, " "), nil
+}

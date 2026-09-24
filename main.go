@@ -201,10 +201,14 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	d.register(fs)
 	t.register(fs)
 	ideName := fs.String("ide", "", "IDE to read, e.g. PhpStorm or GoLand (asked interactively when omitted)")
+	file := fs.String("file", "", "read this JetBrains keymap instead of the IDE's own: a keymap .xml or a settings export .zip")
 	scopeName := fs.String("scope", "custom", "custom: only your changes; all: defaults plus your changes; default: defaults without your changes")
-	keymapName := fs.String("keymap", "", "keymap to read (default: the one active in the IDE)")
+	keymapName := fs.String("keymap", "", "keymap to read (default: the one active in the IDE or in --file)")
 	platform := fs.String("platform", runtime.GOOS, "modifier names for: darwin, windows or linux")
 	layoutName := fs.String("layout", "auto", "keyboard layout for keys like Cmd+ě: auto (ask macOS), none, or "+strings.Join(layout.Names(), ", "))
+	var keepKeys, unkeepKeys listFlag
+	fs.Var(&keepKeys, "keep-key", "leave this key to VS Code, e.g. cmd+g or cmd+ě (repeatable; remembered in keybindings.json)")
+	fs.Var(&unkeepKeys, "unkeep-key", "stop leaving this key to VS Code (repeatable)")
 	apply := fs.Bool("apply", false, "write keybindings.json (without it nothing is written)")
 	verbose := fs.Bool("v", false, "show the exact JSON block and every skipped shortcut")
 	if err := fs.Parse(args); err != nil {
@@ -217,16 +221,22 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	if err != nil {
 		return err
 	}
+
+	// The IDE provides the bundled keymaps the user keymap inherits from. With
+	// --file and --scope custom it is optional.
+	var chosen *ide.IDE
 	ides, err := d.detect()
-	if err != nil {
-		return err
+	if err == nil {
+		var c ide.IDE
+		if c, err = chooseIDE(ides, *ideName, stdin, stdout); err == nil {
+			chosen = &c
+		}
 	}
-	chosen, err := chooseIDE(ides, *ideName, stdin, stdout)
-	if err != nil {
+	if err != nil && (*file == "" || *ideName != "") {
 		return err
 	}
 	home := d.ideHome
-	if home == "" && chosen.Install != nil {
+	if home == "" && chosen != nil && chosen.Install != nil {
 		home = chosen.Install.Home
 	}
 
@@ -240,14 +250,27 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 			fmt.Fprintln(stderr, "warning:", w)
 		}
 	} else if scope != keymap.ScopeCustom {
-		return fmt.Errorf("installation of %s not found; --scope %s needs its bundled keymaps (pass --ide-home)", chosen.DisplayName(), scope)
-	}
-	if err := keymap.LoadUserKeymaps(set, chosen.Config.Dir); err != nil {
-		return err
+		return fmt.Errorf("no IDE installation found; --scope %s needs its bundled keymaps (pass --ide or --ide-home)", scope)
 	}
 	active := *keymapName
-	if active == "" {
-		active = ide.ActiveKeymapName(chosen.Config.Dir)
+	var source string
+	if *file != "" {
+		fileActive, err := keymap.LoadFile(set, *file)
+		if err != nil {
+			return err
+		}
+		if active == "" {
+			active = fileActive
+		}
+		source = "file " + filepath.Base(*file)
+	} else {
+		if err := keymap.LoadUserKeymaps(set, chosen.Config.Dir); err != nil {
+			return err
+		}
+		if active == "" {
+			active = ide.ActiveKeymapName(chosen.Config.Dir)
+		}
+		source = fmt.Sprintf("%s %s", chosen.DisplayName(), chosen.Config.Version)
 	}
 	if active == "" {
 		active = ide.DefaultKeymapName()
@@ -270,6 +293,13 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	if err != nil {
 		return err
 	}
+	keep, keepNotes, err := keepList(vscode.ReadKeep(current), keepKeys, unkeepKeys, convert.Platform(*platform), lay)
+	if err != nil {
+		return err
+	}
+	var kept []convert.Binding
+	res.Bindings, kept = splitKept(res.Bindings, keep)
+
 	var entries []vscode.Entry
 	for _, b := range res.Bindings {
 		entries = append(entries, vscode.Entry{
@@ -281,16 +311,21 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	if lay != nil {
 		layoutPart = ", layout " + lay.Name()
 	}
-	header := fmt.Sprintf("generated from %s %s, keymap %q, scope %s%s; edits inside this block are replaced on the next run", chosen.DisplayName(), chosen.Config.Version, active, scope, layoutPart)
-	updated, err := vscode.Apply(current, entries, header)
+	header := fmt.Sprintf("generated from %s, keymap %q, scope %s%s; edits inside this block are replaced on the next run", source, active, scope, layoutPart)
+	updated, err := vscode.Apply(current, entries, header, keep)
 	if err != nil {
 		return fmt.Errorf("%s: %w", path, err)
 	}
 	outside, _ := vscode.Outside(current)
 
-	fmt.Fprintf(stdout, "IDE:     %s %s  (%s)\n", chosen.DisplayName(), chosen.Config.Version, chosen.Config.Dir)
-	for _, o := range chosen.Older {
-		fmt.Fprintf(stdout, "         ignored older version %s\n", filepath.Base(o.Dir))
+	if *file != "" {
+		fmt.Fprintf(stdout, "File:    %s\n", *file)
+	}
+	if chosen != nil {
+		fmt.Fprintf(stdout, "IDE:     %s %s  (%s)\n", chosen.DisplayName(), chosen.Config.Version, chosen.Config.Dir)
+		for _, o := range chosen.Older {
+			fmt.Fprintf(stdout, "         ignored older version %s\n", filepath.Base(o.Dir))
+		}
 	}
 	if home != "" {
 		fmt.Fprintf(stdout, "Install: %s\n", home)
@@ -308,6 +343,15 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 		fmt.Fprint(stdout, bindingTable(res.Bindings))
 	}
 	fmt.Fprint(stdout, report(res, sel, outside, *verbose))
+	if len(keep) > 0 {
+		fmt.Fprintf(stdout, "\nLeft to VS Code (--keep-key): %s\n", strings.Join(keep, ", "))
+		for _, b := range kept {
+			fmt.Fprintf(stdout, "  %-24s not written: %s -> %s\n", b.Key, b.Action, b.Command)
+		}
+	}
+	for _, n := range keepNotes {
+		fmt.Fprintln(stdout, "  note:", n)
+	}
 
 	if bytes.Equal(updated, current) {
 		fmt.Fprintln(stdout, "\nkeybindings.json is already up to date; nothing to write.")
@@ -331,6 +375,83 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 		fmt.Fprintf(stdout, "Written: %s\n", path)
 	}
 	return nil
+}
+
+// listFlag collects a repeatable flag; values may also be comma-separated.
+type listFlag []string
+
+func (l *listFlag) String() string { return strings.Join(*l, ",") }
+
+func (l *listFlag) Set(v string) error {
+	for _, s := range strings.Split(v, ",") {
+		if s = strings.TrimSpace(s); s != "" {
+			*l = append(*l, s)
+		}
+	}
+	return nil
+}
+
+// keepList merges the keys stored in the block with --keep-key and
+// --unkeep-key. Every key is normalized the same way the converter writes
+// keys, so "cmd+ě" and "cmd+[Digit2]" are the same entry.
+func keepList(stored, add, remove []string, p convert.Platform, lay *layout.Layout) ([]string, []string, error) {
+	var notes []string
+	set := map[string]bool{}
+	var order []string
+	put := func(k string) {
+		if !set[k] {
+			set[k] = true
+			order = append(order, k)
+		}
+	}
+	for _, k := range stored {
+		put(k)
+	}
+	for _, k := range add {
+		n, err := convert.NormalizeUserKey(k, p, lay)
+		if err != nil {
+			return nil, nil, fmt.Errorf("--keep-key: %w", err)
+		}
+		if n != k {
+			notes = append(notes, fmt.Sprintf("--keep-key %s is the key %s", k, n))
+		}
+		put(n)
+	}
+	for _, k := range remove {
+		n, err := convert.NormalizeUserKey(k, p, lay)
+		if err != nil {
+			return nil, nil, fmt.Errorf("--unkeep-key: %w", err)
+		}
+		if !set[n] {
+			notes = append(notes, fmt.Sprintf("--unkeep-key %s: %s was not on the list", k, n))
+		}
+		delete(set, n)
+	}
+	var out []string
+	for _, k := range order {
+		if set[k] {
+			out = append(out, k)
+		}
+	}
+	return out, notes, nil
+}
+
+// splitKept removes bindings on kept keys. A kept single key also removes
+// chords that start with it, because a chord would capture the first key.
+func splitKept(bs []convert.Binding, keep []string) (write, kept []convert.Binding) {
+	set := map[string]bool{}
+	for _, k := range keep {
+		set[k] = true
+	}
+	for _, b := range bs {
+		first := strings.Fields(b.Key)[0]
+		if set[b.Key] || set[first] {
+			kept = append(kept, b)
+			continue
+		}
+		write = append(write, b)
+	}
+	return write, kept
 }
 
 // chooseLayout resolves --layout. The tables describe macOS layouts, so they

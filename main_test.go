@@ -209,3 +209,83 @@ func TestConvertNeedsIDEChoiceWithoutTerminal(t *testing.T) {
 		t.Errorf("expected a request for --ide, got %d: %s", code, out)
 	}
 }
+
+func TestKeepKeyIsRememberedAndMatchesLayoutCharacters(t *testing.T) {
+	f := newFixture(t)
+	args := func(extra ...string) []string {
+		a := f.convertArgs("--layout", "cz-qwerty", "--apply")
+		return append(a, extra...)
+	}
+	// GotoFile is bound to Cmd+ě (meta #100011b) in the fixture; keep it via the character.
+	out, code := f.run(t, args("--keep-key", "cmd+ě")...)
+	if code != 0 {
+		t.Fatalf("exit %d: %s", code, out)
+	}
+	written, _ := os.ReadFile(f.keybindings)
+	if strings.Contains(string(written), "[Digit2]\"") || !strings.Contains(string(written), "// keep for VS Code: cmd+[Digit2]") {
+		t.Errorf("kept key must not be written and must be remembered:\n%s", written)
+	}
+	// Next run without the flag still keeps it.
+	out, _ = f.run(t, args()...)
+	if !strings.Contains(out, "already up to date") {
+		t.Errorf("keep list must survive the next run: %s", out)
+	}
+	// Unkeep with the physical key name brings the binding back.
+	out, code = f.run(t, args("--unkeep-key", "cmd+[Digit2]")...)
+	written, _ = os.ReadFile(f.keybindings)
+	if code != 0 || !strings.Contains(string(written), `"cmd+[Digit2]"`) || strings.Contains(string(written), "keep for VS Code") {
+		t.Errorf("unkeep failed (%d): %s\n%s", code, out, written)
+	}
+}
+
+func TestKeepKeyNeedsLayoutForCharacters(t *testing.T) {
+	f := newFixture(t)
+	out, code := f.run(t, f.convertArgs("--keep-key", "cmd+ě")...) // --layout none
+	if code == 0 || !strings.Contains(out, "depends on the keyboard layout") {
+		t.Errorf("expected a clear error, got %d: %s", code, out)
+	}
+}
+
+func TestFileInput(t *testing.T) {
+	f := newFixture(t)
+	dir := t.TempDir()
+	xmlPath := filepath.Join(dir, "prepared.xml")
+	must(t, os.WriteFile(xmlPath, []byte(strings.Replace(fxUser, `name="Custom"`, `name="Prepared"`, 1)), 0o644))
+
+	args := []string{"convert", "--config-root", f.configRoot, "--ide-home", f.ideHome, "--ide", "testide",
+		"--keybindings", f.keybindings, "--platform", "darwin", "--layout", "none", "--file", xmlPath}
+	out, code := f.run(t, args...)
+	if code != 0 || !strings.Contains(out, `Keymap:  "Prepared"`) || !strings.Contains(out, "shift+cmd+d") {
+		t.Errorf("xml input (%d): %s", code, out)
+	}
+
+	// A settings export zip with the active keymap in options/.
+	zipPath := filepath.Join(dir, "settings.zip")
+	zf, err := os.Create(zipPath)
+	must(t, err)
+	w := zip.NewWriter(zf)
+	for name, content := range map[string]string{
+		"keymaps/Custom.xml":     fxUser,
+		"keymaps/Other.xml":      `<keymap version="1" name="Other" parent="$default"/>`,
+		"options/keymap.xml":     `<application><component name="KeymapManager"><active_keymap name="Custom"/></component></application>`,
+		"options/mac/keymap.xml": `<application><component name="KeymapManager"><active_keymap name="Custom"/></component></application>`,
+	} {
+		fw, err := w.Create(name)
+		must(t, err)
+		fw.Write([]byte(content))
+	}
+	must(t, w.Close())
+	must(t, zf.Close())
+	args[len(args)-1] = zipPath
+	out, code = f.run(t, args...)
+	if code != 0 || !strings.Contains(out, `Keymap:  "Custom"`) {
+		t.Errorf("zip input (%d): %s", code, out)
+	}
+
+	// Without any IDE, --scope custom still works from the file alone.
+	out, code = f.run(t, "convert", "--config-root", filepath.Join(dir, "none"), "--keybindings", f.keybindings,
+		"--platform", "darwin", "--layout", "none", "--file", xmlPath)
+	if code != 0 || !strings.Contains(out, "shift+cmd+d") {
+		t.Errorf("file without IDE (%d): %s", code, out)
+	}
+}

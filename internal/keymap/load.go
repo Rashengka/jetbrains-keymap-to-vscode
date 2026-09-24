@@ -4,10 +4,13 @@ import (
 	"archive/zip"
 	"bytes"
 	"fmt"
+	"html"
 	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
+	"runtime"
 	"strings"
 )
 
@@ -129,4 +132,74 @@ func readZipFile(f *zip.File) ([]byte, error) {
 	}
 	defer rc.Close()
 	return io.ReadAll(rc)
+}
+
+// LoadFile reads keymaps from a file the user prepared: a single keymap .xml,
+// or a JetBrains settings export (.zip, File | Manage IDE Settings | Export
+// Settings). It returns the keymap to use: the one selected in the export, or
+// the only keymap in the file. The keymaps are treated as the user's own.
+func LoadFile(s *Set, path string) (string, error) {
+	if strings.EqualFold(filepath.Ext(path), ".zip") {
+		return loadSettingsZip(s, path)
+	}
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	k, err := ParseKeymap(data, path)
+	if err != nil {
+		return "", err
+	}
+	k.User = true
+	s.AddKeymap(k)
+	return k.Name, nil
+}
+
+var activeKeymapRe = regexp.MustCompile(`<active_keymap\s+name="([^"]*)"`)
+
+func loadSettingsZip(s *Set, path string) (string, error) {
+	r, err := zip.OpenReader(path)
+	if err != nil {
+		return "", err
+	}
+	defer r.Close()
+	var names []string
+	active := map[string]string{}
+	for _, f := range r.File {
+		switch {
+		case strings.HasPrefix(f.Name, "keymaps/") && strings.HasSuffix(f.Name, ".xml"):
+			data, err := readZipFile(f)
+			if err != nil {
+				return "", err
+			}
+			k, err := ParseKeymap(data, path+"!"+f.Name)
+			if err != nil {
+				return "", err
+			}
+			k.User = true
+			s.AddKeymap(k)
+			names = append(names, k.Name)
+		case strings.HasPrefix(f.Name, "options/") && strings.HasSuffix(f.Name, "/keymap.xml") || f.Name == "options/keymap.xml":
+			data, err := readZipFile(f)
+			if err != nil {
+				return "", err
+			}
+			if m := activeKeymapRe.FindSubmatch(data); m != nil {
+				active[f.Name] = html.UnescapeString(string(m[1]))
+			}
+		}
+	}
+	osDir := map[string]string{"darwin": "mac", "windows": "windows", "linux": "linux"}[runtime.GOOS]
+	for _, candidate := range []string{"options/" + osDir + "/keymap.xml", "options/keymap.xml"} {
+		if a := active[candidate]; a != "" {
+			return a, nil
+		}
+	}
+	if len(names) == 1 {
+		return names[0], nil
+	}
+	if len(names) == 0 {
+		return "", fmt.Errorf("%s contains no keymaps (keymaps/*.xml)", path)
+	}
+	return "", fmt.Errorf("%s contains several keymaps (%s); choose one with --keymap", path, strings.Join(names, ", "))
 }

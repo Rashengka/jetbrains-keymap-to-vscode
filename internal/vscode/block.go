@@ -14,6 +14,35 @@ const (
 	EndMarker   = "// <<< jetbrains-keymap-to-vscode"
 )
 
+// KeepPrefix starts the line inside the block that lists keys left to VS Code.
+// It lives in the block so the tool can read it back on the next run.
+const KeepPrefix = "// keep for VS Code: "
+
+// ReadKeep returns the keys listed on the keep line of the managed block.
+func ReadKeep(src []byte) []string {
+	masked, err := maskJSONC(src)
+	if err != nil {
+		return nil
+	}
+	start, end, found, err := blockRange(src, masked)
+	if err != nil || !found {
+		return nil
+	}
+	for _, line := range strings.Split(string(src[start:end]), "\n") {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, KeepPrefix) {
+			var out []string
+			for _, k := range strings.Split(strings.TrimPrefix(line, KeepPrefix), ",") {
+				if k = strings.TrimSpace(k); k != "" {
+					out = append(out, k)
+				}
+			}
+			return out
+		}
+	}
+	return nil
+}
+
 // Entry is one keybinding written into the block, with an optional comment above it.
 type Entry struct {
 	Comment string
@@ -102,7 +131,7 @@ func renderEntries(entries []Entry, indent, nl string) (string, error) {
 // before the closing bracket when there is no block yet). header is written
 // after the start marker. The result is verified to parse and to keep every
 // keybinding outside the block unchanged.
-func Apply(src []byte, entries []Entry, header string) ([]byte, error) {
+func Apply(src []byte, entries []Entry, header string, keep []string) ([]byte, error) {
 	nl := "\n"
 	if bytes.Contains(src, []byte("\r\n")) {
 		nl = "\r\n"
@@ -115,6 +144,9 @@ func Apply(src []byte, entries []Entry, header string) ([]byte, error) {
 	startLine := indent + StartMarker
 	if header != "" {
 		startLine += " " + strings.ReplaceAll(header, "\n", " ")
+	}
+	if len(keep) > 0 {
+		startLine += nl + indent + KeepPrefix + strings.Join(keep, ", ")
 	}
 
 	masked, err := maskJSONC(src)

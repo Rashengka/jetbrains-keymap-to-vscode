@@ -190,3 +190,36 @@ func TestReviewedReasonReachesReport(t *testing.T) {
 		t.Errorf("reviewed action must carry its reason, unknown one must not: %+v", r.Unmapped)
 	}
 }
+
+func TestNormalizeUserKey(t *testing.T) {
+	cz, _ := layout.Get("cz-qwerty")
+	cases := map[string]string{
+		"cmd+g":           "cmd+g",
+		"Command+Shift+G": "shift+cmd+g",
+		"shift+cmd+g":     "shift+cmd+g",
+		"cmd+ě":           "cmd+[Digit2]",
+		"cmd+[Digit2]":    "cmd+[Digit2]",
+		"cmd++":           "cmd+[Digit1]", // + is the Digit1 key on the Czech layout
+		"cmd+!":           "shift+cmd+[Quote]",
+		"ctrl+-":          "ctrl+-",
+		"cmd+k cmd+ř":     "cmd+k cmd+[Digit5]",
+		"option+enter":    "alt+enter",
+	}
+	for in, want := range cases {
+		got, err := NormalizeUserKey(in, Mac, cz)
+		if err != nil || got != want {
+			t.Errorf("%q: got %q, %v; want %q", in, got, err, want)
+		}
+	}
+	// The same physical key must match what the converter generates for JetBrains' "meta #100011b".
+	gen, _ := Key(keymap.NormalizeKeystroke("meta #100011b"), Mac, cz)
+	if user, _ := NormalizeUserKey("cmd+ě", Mac, cz); user != gen {
+		t.Errorf("user %q != generated %q", user, gen)
+	}
+	if _, err := NormalizeUserKey("cmd+ě", Mac, nil); err == nil {
+		t.Error("a layout character without a layout must be an error, not a silent mismatch")
+	}
+	if _, err := NormalizeUserKey("hyper+x", Mac, cz); err == nil {
+		t.Error("unknown modifier accepted")
+	}
+}

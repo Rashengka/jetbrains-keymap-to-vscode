@@ -33,6 +33,8 @@ The transfer is one-way: JetBrains → VS Code.
   `keybindings.json.2026-09-24T11-33-05.bak`, and reads the copy back to verify
   it. If the backup cannot be created or verified, nothing is written. Existing
   backups are never overwritten.
+- **Comments stay.** VS Code reads `keybindings.json` as JSONC, JSON with
+  comments and trailing commas. The tool never re-serializes the file.
 - **Only its own block changes.** The generated keybindings sit between
   `// >>> jetbrains-keymap-to-vscode` and `// <<< jetbrains-keymap-to-vscode`.
   Your own keybindings, comments and formatting outside the block stay as they
@@ -93,7 +95,10 @@ bundled keymaps are. `custom` works with only the configuration directory.
 | `--ide NAME` | IDE to read: `phpstorm`, `goland`, `IntelliJIdea`, … (a unique prefix is enough) |
 | `--target NAME` | `code` (default), `insiders`, `vscodium` or `cursor` |
 | `--keybindings PATH` | Write to this file instead of the target's `keybindings.json` |
-| `--keymap NAME` | Read this keymap instead of the one active in the IDE |
+| `--file PATH` | Read a JetBrains keymap you prepared instead of the IDE's own: a keymap `.xml`, or a settings export `.zip` (File → Manage IDE Settings → Export Settings) |
+| `--keymap NAME` | Read this keymap instead of the one active in the IDE or in `--file` |
+| `--keep-key KEY` | Leave this key to VS Code, e.g. `cmd+g` or `cmd+ě` (repeatable, remembered) |
+| `--unkeep-key KEY` | Take a key off that list again |
 | `--layout NAME` | Keyboard layout for character shortcuts: `auto` (default, macOS), `none`, `cz`, `cz-qwerty`, `sk`, `sk-qwerty` |
 | `--config-root DIR` | Directory with JetBrains configuration directories |
 | `--ide-home DIR` | IDE installation directory (the one containing `lib/`) |
@@ -190,6 +195,32 @@ default on the same key wherever its `when` clause matches. The report lists:
 - keys bound to different commands in the same context within the generated
   block,
 - keys you already use in your own keybindings outside the block.
+
+### Keeping a key for VS Code
+
+If a generated shortcut takes a key you want VS Code to keep, leave it out:
+
+```sh
+jetbrains-keymap-to-vscode convert --ide phpstorm --keep-key cmd+g --apply
+```
+
+The list is stored on a comment line inside the managed block, so later runs
+keep honoring it without the flag. `--unkeep-key cmd+g` removes the key from
+the list. Keys may be written with layout characters: on a Czech layout,
+`cmd+ě` is the same key as `cmd+[Digit2]`, and the tool resolves it the same
+way it resolves JetBrains shortcuts. A kept single key also drops chords that
+start with it.
+
+If you prefer to fix a key by hand, add your own rule **below** the
+`// <<< jetbrains-keymap-to-vscode` line. A rule further down wins, and the
+tool never touches lines outside the block. Do not edit inside the block:
+the next run replaces it.
+
+### Using a keymap file
+
+`--file` reads a keymap you prepared, for example exported from another
+machine. The IDE is still used for the bundled keymaps it inherits from. With
+`--scope custom` the file alone is enough.
 
 ## Maintaining the action table
 
