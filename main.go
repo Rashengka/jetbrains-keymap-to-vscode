@@ -419,7 +419,21 @@ func report(r convert.Result, sel keymap.Selection, outside []vscode.RawBinding,
 			fmt.Fprintf(&b, "  ... and %d more (use -v)\n", len(items)-limit)
 		}
 	}
-	section("Not transferred: no VS Code command for the action", r.Unmapped)
+	var reviewed, open []convert.Skipped
+	for _, u := range r.Unmapped {
+		if u.Reason != "" {
+			reviewed = append(reviewed, u)
+		} else {
+			open = append(open, u)
+		}
+	}
+	section("Not transferred: action not in the table yet", open)
+	section("Not transferred: reviewed, VS Code has no counterpart", reviewed)
+	unsafe := make([]convert.Skipped, len(r.Unsafe))
+	for i, u := range r.Unsafe {
+		unsafe[i] = convert.Skipped{Action: u.Action, Shortcut: u.Shortcut, Reason: "-> " + u.Reason + " would apply everywhere"}
+	}
+	section("Not transferred: key without Ctrl/Alt/Cmd and no when clause", unsafe)
 	section("Not transferred: key cannot be expressed in VS Code", r.BadKeys)
 	section("Not transferred: mouse shortcuts (VS Code has none)", r.Mouse)
 	section("Default shortcuts you removed in JetBrains (VS Code defaults are left untouched)", r.Removed)

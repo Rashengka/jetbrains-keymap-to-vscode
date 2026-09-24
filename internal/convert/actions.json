@@ -785,5 +785,382 @@
     "action": "PreviousDiff",
     "command": "workbench.action.compareEditor.previousChange",
     "when": "textCompareEditorVisible"
+  },
+  {
+    "action": "ActivateUnitTestsToolWindow",
+    "command": "workbench.view.testing"
+  },
+  {
+    "action": "AddLogpoint",
+    "command": "editor.debug.action.addLogPoint",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "Build",
+    "command": "workbench.action.tasks.build"
+  },
+  {
+    "action": "BuildSolutionAction",
+    "command": "workbench.action.tasks.build"
+  },
+  {
+    "action": "CallInlineCompletionAction",
+    "command": "editor.action.inlineSuggest.trigger",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "CodeReview.NextComment",
+    "command": "editor.action.nextCommentThreadAction",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "CodeReview.PreviousComment",
+    "command": "editor.action.previousCommentThreadAction",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "CollapseBlock",
+    "command": "editor.fold",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "CollapseSelection",
+    "command": "editor.createFoldingRangeFromSelection",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "CopyAbsolutePath",
+    "command": "copyFilePath"
+  },
+  {
+    "action": "DecrementWindowHeight",
+    "command": "workbench.action.decreaseViewHeight"
+  },
+  {
+    "action": "DecrementWindowWidth",
+    "command": "workbench.action.decreaseViewWidth"
+  },
+  {
+    "action": "Diff.FocusOppositePane",
+    "command": "diffEditor.switchSide",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EditBreakpoint",
+    "command": "editor.debug.action.editBreakpoint",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EditorAddCaretPerSelectedLine",
+    "command": "editor.action.insertCursorAtEndOfEachLineSelected",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorCopy",
+    "command": "editor.action.clipboardCopyAction",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EditorCut",
+    "command": "editor.action.clipboardCutAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorDecreaseFontSizeGlobal",
+    "command": "editor.action.fontZoomOut"
+  },
+  {
+    "action": "EditorIncreaseFontSizeGlobal",
+    "command": "editor.action.fontZoomIn"
+  },
+  {
+    "action": "EditorPaste",
+    "command": "editor.action.clipboardPasteAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorPasteSimple",
+    "command": "editor.action.pasteAsText",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorToggleInsertState",
+    "command": "editor.action.toggleOvertypeInsertMode",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EmmetNextEditPoint",
+    "command": "editor.emmet.action.nextEditPoint",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EmmetPreviousEditPoint",
+    "command": "editor.emmet.action.prevEditPoint",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "Exit",
+    "command": "workbench.action.quit"
+  },
+  {
+    "action": "FindSelectionInPath",
+    "command": "workbench.action.findInFiles"
+  },
+  {
+    "action": "FocusStatusBar",
+    "command": "workbench.action.focusStatusBar"
+  },
+  {
+    "action": "Git.Add",
+    "command": "git.stage"
+  },
+  {
+    "action": "Git.CreateNewBranch",
+    "command": "git.branch"
+  },
+  {
+    "action": "Git.ShowBranches",
+    "command": "git.checkout"
+  },
+  {
+    "action": "GotoNextElementUnderCaretUsage",
+    "command": "editor.action.wordHighlight.next",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "GotoPrevElementUnderCaretUsage",
+    "command": "editor.action.wordHighlight.prev",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "GotoTest",
+    "command": "testing.goToRelatedTest",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "HighlightUsagesInFile",
+    "command": "editor.action.wordHighlight.trigger",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "Images.Editor.ZoomIn",
+    "command": "imagePreview.zoomIn",
+    "when": "activeCustomEditorId == 'imagePreview.previewEditor'"
+  },
+  {
+    "action": "Images.Editor.ZoomOut",
+    "command": "imagePreview.zoomOut",
+    "when": "activeCustomEditorId == 'imagePreview.previewEditor'"
+  },
+  {
+    "action": "InsertInlineCompletionLineAction",
+    "command": "editor.action.inlineSuggest.acceptNextLine",
+    "when": "inlineSuggestionVisible && editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "InsertInlineCompletionWordAction",
+    "command": "editor.action.inlineSuggest.acceptNextWord",
+    "when": "inlineSuggestionVisible && editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "MaximizeToolWindow",
+    "command": "workbench.action.toggleMaximizedPanel"
+  },
+  {
+    "action": "NextTemplateVariable",
+    "command": "jumpToNextSnippetPlaceholder",
+    "when": "editorTextFocus && hasNextTabstop && inSnippetMode"
+  },
+  {
+    "action": "ParameterInfo.GoToPreviousSignature",
+    "command": "showPrevParameterHint",
+    "when": "editorFocus && parameterHintsMultipleSignatures && parameterHintsVisible"
+  },
+  {
+    "action": "PreviousTemplateVariable",
+    "command": "jumpToPrevSnippetPlaceholder",
+    "when": "editorTextFocus && hasPrevTabstop && inSnippetMode"
+  },
+  {
+    "action": "QuickEvaluateExpression",
+    "command": "editor.debug.action.showDebugHover",
+    "when": "inDebugMode && editorTextFocus"
+  },
+  {
+    "action": "ReSharperGotoNextErrorInSolution",
+    "command": "editor.action.marker.nextInFiles",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "ReSharperGotoPrevErrorInSolution",
+    "command": "editor.action.marker.prevInFiles",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "RecentFilesFallback",
+    "command": "workbench.action.showAllEditorsByMostRecentlyUsed"
+  },
+  {
+    "action": "RerunTests",
+    "command": "testing.reRunLastRun"
+  },
+  {
+    "action": "ResetIdeScaleAction",
+    "command": "workbench.action.zoomReset"
+  },
+  {
+    "action": "RestoreDefaultLayout",
+    "command": "workbench.action.resetViewLocations"
+  },
+  {
+    "action": "RiderRemoveAllLineBreakpoints",
+    "command": "workbench.debug.viewlet.action.removeAllBreakpoints"
+  },
+  {
+    "action": "RunJsbtTask",
+    "command": "workbench.action.tasks.runTask"
+  },
+  {
+    "action": "SaveAs",
+    "command": "workbench.action.files.saveAs"
+  },
+  {
+    "action": "SmartSelect",
+    "command": "editor.action.smartSelect.expand",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "SmartUnSelect",
+    "command": "editor.action.smartSelect.shrink",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "Switcher",
+    "command": "workbench.action.quickOpenPreviousRecentlyUsedEditor"
+  },
+  {
+    "action": "SwitcherFallback",
+    "command": "workbench.action.quickOpenPreviousRecentlyUsedEditor"
+  },
+  {
+    "action": "Terminal.ClearBuffer",
+    "command": "workbench.action.terminal.clear",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.CloseTab",
+    "command": "workbench.action.terminal.kill",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.CommandCompletion.InsertSuggestion",
+    "command": "workbench.action.terminal.acceptSelectedSuggestionEnter",
+    "when": "terminalFocus && terminalSuggestWidgetVisible"
+  },
+  {
+    "action": "Terminal.CommandCompletion.Invoke",
+    "command": "workbench.action.terminal.triggerSuggest",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.CommandCompletion.SelectSuggestionAbove",
+    "command": "workbench.action.terminal.selectPrevSuggestion",
+    "when": "terminalFocus && terminalSuggestWidgetVisible"
+  },
+  {
+    "action": "Terminal.CommandCompletion.SelectSuggestionBelow",
+    "command": "workbench.action.terminal.selectNextSuggestion",
+    "when": "terminalFocus && terminalSuggestWidgetVisible"
+  },
+  {
+    "action": "Terminal.CopySelectedText",
+    "command": "workbench.action.terminal.copySelection",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.Find",
+    "command": "workbench.action.terminal.focusFind",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.LineDown",
+    "command": "workbench.action.terminal.scrollDown",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.LineUp",
+    "command": "workbench.action.terminal.scrollUp",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.NewTab",
+    "command": "workbench.action.terminal.new",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.PageDown",
+    "command": "workbench.action.terminal.scrollDownPage",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.PageUp",
+    "command": "workbench.action.terminal.scrollUpPage",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.Paste",
+    "command": "workbench.action.terminal.paste",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.SearchInCommandHistory",
+    "command": "workbench.action.terminal.runRecentCommand",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "Terminal.SelectAll",
+    "command": "workbench.action.terminal.selectAll",
+    "when": "terminalFocus"
+  },
+  {
+    "action": "TextSearchAction",
+    "command": "workbench.action.findInFiles"
+  },
+  {
+    "action": "UsageView.Remove",
+    "command": "references-view.removeReferenceItem",
+    "when": "focusedView == 'references-view.tree'"
+  },
+  {
+    "action": "UsageView.Rerun",
+    "command": "references-view.refind",
+    "when": "focusedView == 'references-view.tree'"
+  },
+  {
+    "action": "UsageView.ShowRecentFindUsages",
+    "command": "references-view.pickFromHistory"
+  },
+  {
+    "action": "XDebugger.SetValue",
+    "command": "debug.setVariable",
+    "when": "debugState == 'stopped' && variablesFocused"
+  },
+  {
+    "action": "ZoomInIdeAction",
+    "command": "workbench.action.zoomIn"
+  },
+  {
+    "action": "ZoomOutIdeAction",
+    "command": "workbench.action.zoomOut"
+  },
+  {
+    "action": "org.intellij.plugins.markdown.ui.actions.styling.InsertImageAction",
+    "command": "markdown.editor.insertImageFromWorkspace",
+    "when": "editorLangId == 'markdown' && editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "runShellFileAction",
+    "command": "workbench.action.terminal.runActiveFile",
+    "when": "editorLangId == 'shellscript'"
   }
 ]

@@ -15,6 +15,34 @@ import (
 //go:embed actions.json
 var actionsJSON []byte
 
+//go:embed reviewed.json
+var reviewedJSON []byte
+
+// Reviewed lists JetBrains actions that were checked and have no VS Code
+// counterpart, with the reason. A later review only has to re-check the reason.
+type Reviewed struct {
+	VSCode  string `json:"vscode"`
+	Date    string `json:"reviewed"`
+	Note    string `json:"note"`
+	Actions []struct {
+		Action string `json:"action"`
+		Reason string `json:"reason"`
+	} `json:"actions"`
+}
+
+// DefaultReviewed returns the built-in list of reviewed actions, keyed by action id.
+func DefaultReviewed() map[string]string {
+	var r Reviewed
+	if err := json.Unmarshal(reviewedJSON, &r); err != nil {
+		panic(err) // embedded data, covered by tests
+	}
+	m := map[string]string{}
+	for _, a := range r.Actions {
+		m[a.Action] = a.Reason
+	}
+	return m
+}
+
 // Mapping maps one IntelliJ action to one VS Code command.
 type Mapping struct {
 	Action  string          `json:"action"`
@@ -239,8 +267,9 @@ type Skipped struct {
 // Result is the outcome of converting a selection.
 type Result struct {
 	Bindings []Binding
-	Unmapped []Skipped // action has no VS Code counterpart in the table
+	Unmapped []Skipped // action not in the table; Reason is set when it was reviewed and has no counterpart
 	BadKeys  []Skipped // key cannot be expressed in VS Code
+	Unsafe   []Skipped // key without Ctrl/Alt/Cmd and no when clause: it would replace the key everywhere
 	Mouse    []Skipped // mouse shortcuts, not supported by VS Code
 	Removed  []Skipped // default shortcuts the user removed in JetBrains
 	Conflict []Conflict
@@ -257,6 +286,7 @@ type Conflict struct {
 // the keyboard layout is unknown; layout-dependent keys are then reported.
 func Convert(sel keymap.Selection, t Table, p Platform, lay *layout.Layout) Result {
 	var r Result
+	reviewed := DefaultReviewed()
 	for _, e := range sel.Entries {
 		for _, m := range e.Shortcuts.Mouse {
 			r.Mouse = append(r.Mouse, Skipped{e.Action, m, ""})
@@ -266,22 +296,42 @@ func Convert(sel keymap.Selection, t Table, p Platform, lay *layout.Layout) Resu
 		}
 		maps := t[e.Action]
 		for _, s := range e.Shortcuts.Keys {
+			if len(maps) == 0 {
+				r.Unmapped = append(r.Unmapped, Skipped{e.Action, s.String(), reviewed[e.Action]})
+				continue
+			}
 			key, err := Chord(s, p, lay)
 			if err != nil {
 				r.BadKeys = append(r.BadKeys, Skipped{e.Action, s.String(), err.(*KeyError).Reason})
 				continue
 			}
-			if len(maps) == 0 {
-				r.Unmapped = append(r.Unmapped, Skipped{e.Action, s.String(), ""})
-				continue
-			}
 			for _, m := range maps {
+				if m.When == "" && plainKey(key) {
+					r.Unsafe = append(r.Unsafe, Skipped{e.Action, s.String(), m.Command})
+					continue
+				}
 				r.Bindings = append(r.Bindings, Binding{Key: key, Command: m.Command, When: m.When, Args: m.Args, Action: e.Action, Shortcut: s})
 			}
 		}
 	}
 	r.Conflict = findConflicts(r.Bindings)
 	return r
+}
+
+// plainKey reports whether every keystroke of a VS Code key lacks Ctrl, Alt,
+// Cmd, Win and Meta. Such keys (Escape, Delete, arrows, Tab, F-keys with only
+// Shift) are typed everywhere, so binding them without a when clause would
+// take them away from every other widget.
+func plainKey(key string) bool {
+	for _, stroke := range strings.Fields(key) {
+		for _, part := range strings.Split(stroke, "+") {
+			switch part {
+			case "ctrl", "alt", "cmd", "win", "meta":
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func findConflicts(bs []Binding) []Conflict {

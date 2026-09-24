@@ -126,3 +126,67 @@ func TestConvertSortsIntoReportBuckets(t *testing.T) {
 		t.Errorf("conflict not found: %+v", r.Conflict)
 	}
 }
+
+func TestPlainKeyWithoutWhenIsNotWritten(t *testing.T) {
+	sel := keymap.Selection{Entries: []keymap.Entry{
+		{Action: "A", Shortcuts: keymap.Shortcuts{Keys: []keymap.Shortcut{{First: "escape"}, {First: "shift f6"}, {First: "meta escape"}}}},
+		{Action: "B", Shortcuts: keymap.Shortcuts{Keys: []keymap.Shortcut{{First: "delete"}}}},
+	}}
+	tab := Table{
+		"A": {{Action: "A", Command: "a.global"}},
+		"B": {{Action: "B", Command: "b.inView", When: "focusedView == 'x'"}},
+	}
+	r := Convert(sel, tab, Mac, nil)
+	if len(r.Unsafe) != 2 {
+		t.Errorf("escape and shift+f6 without when must be refused: %+v", r.Unsafe)
+	}
+	if len(r.Bindings) != 2 || r.Bindings[0].Key != "cmd+escape" || r.Bindings[1].Key != "delete" {
+		t.Errorf("cmd+escape and delete with a when clause are fine: %+v", r.Bindings)
+	}
+}
+
+func TestReviewedListIsConsistent(t *testing.T) {
+	var r Reviewed
+	if err := json.Unmarshal(reviewedJSON, &r); err != nil {
+		t.Fatal(err)
+	}
+	if r.VSCode == "" || r.Date == "" || len(r.Actions) == 0 {
+		t.Fatalf("reviewed.json needs version, date and actions: %+v", r)
+	}
+	tab := DefaultTable()
+	seen := map[string]bool{}
+	for _, a := range r.Actions {
+		if a.Reason == "" {
+			t.Errorf("%s: no reason", a.Action)
+		}
+		if seen[a.Action] {
+			t.Errorf("%s: listed twice", a.Action)
+		}
+		seen[a.Action] = true
+		if _, ok := tab[a.Action]; ok {
+			t.Errorf("%s is both mapped and reviewed as having no counterpart", a.Action)
+		}
+	}
+	type key struct{ action, command, when string }
+	dup := map[key]bool{}
+	for _, maps := range tab {
+		for _, m := range maps {
+			k := key{m.Action, m.Command, m.When}
+			if dup[k] {
+				t.Errorf("duplicate mapping %+v", k)
+			}
+			dup[k] = true
+		}
+	}
+}
+
+func TestReviewedReasonReachesReport(t *testing.T) {
+	sel := keymap.Selection{Entries: []keymap.Entry{
+		{Action: "Console.Jdbc.Execute", Shortcuts: keymap.Shortcuts{Keys: []keymap.Shortcut{{First: "meta enter"}}}},
+		{Action: "NeverSeenAction", Shortcuts: keymap.Shortcuts{Keys: []keymap.Shortcut{{First: "meta j"}}}},
+	}}
+	r := Convert(sel, Table{}, Mac, nil)
+	if len(r.Unmapped) != 2 || r.Unmapped[0].Reason == "" || r.Unmapped[1].Reason != "" {
+		t.Errorf("reviewed action must carry its reason, unknown one must not: %+v", r.Unmapped)
+	}
+}

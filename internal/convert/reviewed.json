@@ -1,0 +1,1575 @@
+{
+  "vscode": "1.139",
+  "reviewed": "2026-09-24",
+  "note": "JetBrains actions checked against VS Code built-in commands and found to have no equivalent. Re-check the reason instead of searching again; remove an entry when a counterpart appears.",
+  "actions": [
+    {
+      "action": "ActivateBookmarksToolWindow",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ActivateNuGetToolWindow",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "Arrangement.Alias.Rule.Add",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Alias.Rule.Edit",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Alias.Rule.Match.Condition.Move.Down",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Alias.Rule.Match.Condition.Move.Up",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Alias.Rule.Remove",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Rule.Add",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Rule.Edit",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Rule.Group.Condition.Move.Down",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Rule.Group.Condition.Move.Up",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Rule.Match.Condition.Move.Down",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Rule.Match.Condition.Move.Up",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "Arrangement.Rule.Remove",
+      "reason": "Code arrangement settings UI"
+    },
+    {
+      "action": "BookmarksView.ChooseType",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "BookmarksView.Create",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "BookmarksView.Delete",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "BookmarksView.MoveDown",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "BookmarksView.MoveUp",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "BookmarksView.Rename",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "CIDR.Debugger.CopyAddress",
+      "reason": "Native (CLion) debugger"
+    },
+    {
+      "action": "CIDR.Debugger.DisassembleFrame",
+      "reason": "Native (CLion) debugger"
+    },
+    {
+      "action": "CIDR.Debugger.ImageViewerActions.CopyImage",
+      "reason": "Native (CLion) debugger"
+    },
+    {
+      "action": "CIDR.Debugger.JumpToDebuggerConsole",
+      "reason": "Native (CLion) debugger"
+    },
+    {
+      "action": "CIDR.Debugger.ShowInMemoryView",
+      "reason": "Native (CLion) debugger"
+    },
+    {
+      "action": "CWMHostShowPopupAction",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "CWMThinClientShowPopupAction",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "CancelBuildAction",
+      "reason": "Shares the build key in Rider and toggles by build state; VS Code keybindings have no such state"
+    },
+    {
+      "action": "ChangesView.AddUnversioned",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "ChangesView.Revert",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "ChangesView.ShelveSilently",
+      "reason": "JetBrains shelf is not git stash; mapping would change data in a different place"
+    },
+    {
+      "action": "ChangesView.UnshelveSilently",
+      "reason": "JetBrains shelf is not git stash"
+    },
+    {
+      "action": "CollapseAll",
+      "reason": "Collapses trees and tool windows too, not only editor folds"
+    },
+    {
+      "action": "Console.Execute",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.Execute.Multiline",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.History.Browse",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.Jdbc.BrowseHistory",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.Jdbc.Cancel",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.Jdbc.Execute",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.Jpa.Close",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.Jpa.Execute",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.Jpa.Terminate",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.Open",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.SplitLine",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.AddColumn",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.AddRow",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.CloneColumn",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.CloneRow",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.ColumnSortAsc",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.ColumnSortDesc",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.ColumnSortReset",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.ColumnVisibility",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.ColumnsList",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.CompareCells",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.Copy",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.CopyAggregatorResult",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.DeleteColumns",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.DeleteRows",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.EditFilterCriteria",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.EditValue",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.EditValueMaximized",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.FindInGrid",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.GotoReferencedResult",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.GotoReferencingResult",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.HideEditMaximized",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.MaximizeEditingCell",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.NavigateAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.NextPage",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.OpenLocalFileAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.OpenWebUrlAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.PreviousPage",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.Reload",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.RevertSelected",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.SelectColumn",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.SelectRow",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.SetDefault",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.SetDefault.Fallback",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.SetNull",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.SetNull.Fallback",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.ShowRecordView",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.Submit",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.TableResult.SubmitAndCommit",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Console.Transaction.Commit",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.CopyAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.CopyDdlAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.CopyTable",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.DataSourceCopyAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.DataSourceCutAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.DataSourcePasteAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.Ddl.AlterObject",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.DeactivateAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.DropAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.ForceRefresh",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.ForestNodeShiftDownAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.ForestNodeShiftLeftAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.ForestNodeShiftRightAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.ForestNodeShiftUpAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.FullTextSearch",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.MoveToGroup",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.OpenDdlInConsole",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.OpenFamilyAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.PropertiesAction",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.Refresh",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.ShowDiff",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.SqlGenerator",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.Tools.RevertChanges",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "DatabaseView.Tools.SubmitChanges",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Diagram.DeleteSelection",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Diagram.DeselectAll",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Diagram.SelectAll",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Diff.NextChange",
+      "reason": "Moves to the next file of a comparison; VS Code only moves between changes"
+    },
+    {
+      "action": "Diff.PrevChange",
+      "reason": "Moves to the previous file of a comparison; VS Code only moves between changes"
+    },
+    {
+      "action": "Docker.RemoteServers.ConnectServer",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "Docker.RemoteServers.EditServerConfig",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "Docker.RemoteServers.StartAllComposeApp",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "Docker.RemoteServers.StartComposeService",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "Docker.RemoteServers.StartContainer",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "Docker.RemoteServers.StopComposeApp",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "Docker.RemoteServers.StopComposeService",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "Docker.RemoteServers.StopContainer",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "Docker.RemoteServers.StopDeploy",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "EditorBackSpace",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorDelete",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorDown",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorDownWithSelection",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorEnter",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorEscape",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorIndentSelection",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorLeft",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorLeftWithSelection",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorRight",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorRightWithSelection",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorTab",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorUnindentSelection",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorUp",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "EditorUpWithSelection",
+      "reason": "Basic editing key that VS Code already binds the same way"
+    },
+    {
+      "action": "ExpressionTypeInfo",
+      "reason": "Shows the static type of an expression; VS Code has no such command (debug hover is different)"
+    },
+    {
+      "action": "ExternalSystem.CollapseAll",
+      "reason": "Maven/Gradle integration is not built into VS Code"
+    },
+    {
+      "action": "ExternalSystem.DetachProject",
+      "reason": "Maven/Gradle integration is not built into VS Code"
+    },
+    {
+      "action": "ExternalSystem.ExpandAll",
+      "reason": "Maven/Gradle integration is not built into VS Code"
+    },
+    {
+      "action": "ExternalSystem.OpenConfig",
+      "reason": "Maven/Gradle integration is not built into VS Code"
+    },
+    {
+      "action": "ExternalSystem.ProjectRefreshAction",
+      "reason": "Maven/Gradle integration is not built into VS Code"
+    },
+    {
+      "action": "FileChooser.Delete",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.GoBackward",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.GoForward",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.GoToParent",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.GoToRoot",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.GotoDesktop",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.GotoHome",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.GotoModule",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.GotoProject",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.NewFolder",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.Refresh",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FileChooser.TogglePathBar",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "FocusEditor",
+      "reason": "Bound to Escape; a global rebinding of Escape would break closing widgets and dialogs"
+    },
+    {
+      "action": "Git.Commit.Stage",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "Git.CreateNewBranch.FromCommit",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "Git.Rename.Local.Branch",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "Git.Stage.Add",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "Git.Stage.Reset",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "Git.Stage.Revert",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "Git.Stash.Drop",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "Git.WorkingTrees.Refresh",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "Git.WorkingTrees.Remove",
+      "reason": "Works only inside a JetBrains VCS tool window; the VS Code command would act globally on the same key"
+    },
+    {
+      "action": "GotoBookmark0",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoBookmark1",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoBookmark2",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoBookmark3",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoBookmark4",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoBookmark5",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoBookmark6",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoBookmark7",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoBookmark8",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoBookmark9",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "GotoRow",
+      "reason": "Row navigation in data tables, not text lines"
+    },
+    {
+      "action": "Graph.ActualSize",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.AlignNodes.Bottom",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.AlignNodes.Center",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.AlignNodes.Left",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.AlignNodes.Middle",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.AlignNodes.Right",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.AlignNodes.Top",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.ApplyCurrentLayout",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.Delete",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.DistributeNodes.Horizontally",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.DistributeNodes.Vertically",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.RouteEdges",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.ZoomIn",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Graph.ZoomOut",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Jdbc.OpenConsole.Any",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Jdbc.OpenConsole.New",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Jdbc.OpenConsole.New.Generate",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Jdbc.OpenConsole.New.InPath",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Jdbc.OpenEditor.Console",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Jdbc.OpenEditor.DDL",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Jdbc.OpenEditor.Data",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Jdbc.OpenEditor.Grid.DDL",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "List-scrollDown",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-scrollDownExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-scrollUp",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-scrollUpExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectFirstRow",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectFirstRowExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectLastRow",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectLastRowExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectNextColumn",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectNextColumnExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectNextRow",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectNextRowExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectPreviousColumn",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectPreviousColumnExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectPreviousRow",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "List-selectPreviousRowExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Maven.CollapseAll",
+      "reason": "Maven/Gradle integration is not built into VS Code"
+    },
+    {
+      "action": "Maven.ExpandAll",
+      "reason": "Maven/Gradle integration is not built into VS Code"
+    },
+    {
+      "action": "Maven.Uml.Exclude",
+      "reason": "Maven/Gradle integration is not built into VS Code"
+    },
+    {
+      "action": "NavBar-return",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "NavBar-selectDown",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "NavBar-selectEnd",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "NavBar-selectHome",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "NavBar-selectLeft",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "NavBar-selectRight",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "NavBar-selectUp",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "NavigateToImmediateWindow",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "NextOccurence",
+      "reason": "Navigates results in the active tool window, not only word highlights"
+    },
+    {
+      "action": "OpenInRightSplit",
+      "reason": "Opens the file selected in a tree; VS Code command splits the active editor"
+    },
+    {
+      "action": "PopupHector",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "PopupMenu-cancel",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "PopupMenu-return",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "PopupMenu-selectChild",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "PopupMenu-selectNext",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "PopupMenu-selectParent",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "PopupMenu-selectPrevious",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "PreviousOccurence",
+      "reason": "Navigates results in the active tool window, not only word highlights"
+    },
+    {
+      "action": "ReSharperGotoContainingDeclaration",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "ReSharperNavigateTo",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "ReSharperSelectContainingDeclaration",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RecentChanges",
+      "reason": "Local history list; VS Code timeline is a different view"
+    },
+    {
+      "action": "Refresh",
+      "reason": "Generic refresh of whatever view is focused"
+    },
+    {
+      "action": "RemoteHostView.CopyPaths",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "RemoteHostView.EditSource",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "RemoteHostView.Rename",
+      "reason": "Remote and collaboration tools that are not built into VS Code"
+    },
+    {
+      "action": "Rider.Plugins.FSharp.SendToFsi",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderDotCoverCoveringTestsPopupCoverAllTestsAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderDotCoverCoveringTestsPopupCoverSelectedTestsAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderDotCoverCoveringTestsPopupDebugSelectedTestsAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderDotCoverCoveringTestsPopupRunAllTestsAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderDotCoverCoveringTestsPopupRunSelectedTestsAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderDotCoverUnitTestCoverSolutionAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderDumpLookupAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderEditSource",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderEditSourceInRightSplit",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderNuGetContextPopupAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderNuGetCopyPackageNameAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderNuGetQuickDocAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderNuGetToggleDependenciesExpanderAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderNuGetToggleInfoExpanderAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderOpenSolution",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderProblemsViewToolsetContextPopupAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderProjectDiagramApplyCurrentLayout",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderReattach",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderTypeHierarchy.BaseOnThisType",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestAppendTestsAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestAppendTestsTwAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestDebugContextAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestDebugContextTwAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestDotMemoryUnitContextAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestDotMemoryUnitSolutionAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestNewSessionAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestNewSessionTwAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestQuickListPopupAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRemoveElementsFromSessionTwAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRepeatPreviousRunAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRunContextAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRunContextTwAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRunContextUntilFailAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRunCurrentSessionAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRunCurrentSessionTwAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRunSolutionAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRunSolutionTwAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestRunTreeTwAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestSessionAbortAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestSessionRerunFailedTestsAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestTreeSelectionPopupAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "RiderUnitTestTreeTextFilterAction",
+      "reason": ".NET / Rider feature without a built-in VS Code counterpart"
+    },
+    {
+      "action": "SchemaCompare.Cancel",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "SchemaCompare.Compare",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "SchemaCompare.GenerateDeployScript",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "SchemaCompare.SaveScmpFile",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "SchemaCompare.UpdateTarget",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "SearchEverywhere.CompleteCommand",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SearchEverywhere.NavigateToNextGroup",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SearchEverywhere.NavigateToPrevGroup",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SearchEverywhere.NextTab",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SearchEverywhere.PrevTab",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SearchEverywhere.SelectItem",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "ShelveChanges.UnshelveWithDialog",
+      "reason": "JetBrains shelf is not git stash"
+    },
+    {
+      "action": "SplitChooser.Duplicate",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SplitChooser.Exit",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SplitChooser.NextWindow",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SplitChooser.PreviousWindow",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SplitChooser.Split",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SplitChooser.SplitCenter",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SplitChooser.SplitDown",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SplitChooser.SplitLeft",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SplitChooser.SplitRight",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "SplitChooser.SplitTop",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Sql.EditParameter",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "SwitcherIterateItems",
+      "reason": "Cycling inside the open switcher; VS Code handles this inside its picker"
+    },
+    {
+      "action": "SwitcherIterateItemsFallback",
+      "reason": "Cycling inside the open switcher; VS Code handles this inside its picker"
+    },
+    {
+      "action": "Table-scrollDownChangeSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-scrollDownExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-scrollUpChangeSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-scrollUpExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectFirstColumn",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectFirstColumnExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectFirstRow",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectFirstRowExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectLastColumn",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectLastColumnExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectLastRow",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectLastRowExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectNextColumn",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectNextColumnExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectNextRow",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectNextRowExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectPreviousColumn",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectPreviousColumnExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectPreviousRow",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-selectPreviousRowExtendSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "Table-startEditing",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "TableResult.GrowSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "TableResult.SelectAllOccurrences",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "TableResult.SelectColumn",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "TableResult.SelectNextOccurrence",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "TableResult.ShrinkSelection",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "TableResult.UnselectPreviousOccurrence",
+      "reason": "Database tools; VS Code has no built-in database support"
+    },
+    {
+      "action": "ToggleBookmark",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark0",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark1",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark2",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark3",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark4",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark5",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark6",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark7",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark8",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmark9",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "ToggleBookmarkWithMnemonic",
+      "reason": "VS Code has no built-in bookmarks"
+    },
+    {
+      "action": "Tree-scrollDownChangeSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-scrollDownExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-scrollUpChangeSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-scrollUpExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectAll",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectChild",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectChildExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectFirst",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectFirstExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectLast",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectLastExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectNext",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectNextExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectParent",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectParentExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectPrevious",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-selectPreviousExtendSelection",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Tree-startEditing",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UML.Find",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "UML.ShowChanges",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "UML.ShowStructure",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Uml.CollapseNodes",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Uml.ExpandNodes",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Uml.NewElement",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Uml.NodeIntentions",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "Uml.ShowDiff",
+      "reason": "Diagram tools"
+    },
+    {
+      "action": "UsageFiltering.Imports",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UsageFiltering.ReadAccess",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UsageFiltering.WriteAccess",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UsageGrouping.Directory",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UsageGrouping.DirectoryStructure",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UsageGrouping.FileStructure",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UsageGrouping.FlattenModules",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UsageGrouping.Module",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UsageGrouping.Package",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "UsageGrouping.UsageType",
+      "reason": "Navigation inside JetBrains lists, trees and popups; VS Code widgets handle these keys themselves"
+    },
+    {
+      "action": "Vcs.CombinedDiff.CaretToNextBlock",
+      "reason": "Moves to the next file of a combined diff; VS Code only moves between changes"
+    },
+    {
+      "action": "Vcs.CombinedDiff.CaretToPrevBlock",
+      "reason": "Moves to the previous file of a combined diff; VS Code only moves between changes"
+    },
+    {
+      "action": "Vcs.CopyRevisionNumberAction",
+      "reason": "VS Code command needs a selected commit from a history view"
+    },
+    {
+      "action": "Vcs.RefreshFileHistory",
+      "reason": "File history tool window has no VS Code counterpart"
+    },
+    {
+      "action": "XPathView.Actions.Evaluate",
+      "reason": "XPath plugin"
+    },
+    {
+      "action": "XPathView.Actions.FindByExpression",
+      "reason": "XPath plugin"
+    },
+    {
+      "action": "XPathView.Actions.ShowPath",
+      "reason": "XPath plugin"
+    }
+  ]
+}

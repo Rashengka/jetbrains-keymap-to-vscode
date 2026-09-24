@@ -131,9 +131,15 @@ swift tools/gen-mac-layouts.swift > internal/layout/mac.json
 The report lists all of these:
 
 - **Actions without a VS Code counterpart.** The action table
-  (`internal/convert/actions.json`) covers common editing, navigation, search,
-  refactoring, debugging and version-control actions. Many JetBrains actions
-  have no equivalent in VS Code.
+  (`internal/convert/actions.json`, about 250 actions) covers editing,
+  navigation, search, refactoring, debugging, testing, terminal and version
+  control. Actions that were checked and have no VS Code equivalent are listed
+  with the reason in `internal/convert/reviewed.json`. The report separates
+  them from actions nobody has checked yet.
+- **Plain keys without a context.** A shortcut without Ctrl, Alt or Cmd
+  (Escape, Delete, arrows, F-keys) is written only when the mapping restricts
+  it with a `when` clause. Otherwise it would take the key away from every
+  other part of VS Code.
 - **Mouse shortcuts.** VS Code keybindings cannot use the mouse.
 - **Keys that depend on the keyboard layout, when the layout is unknown.** See
   [Keyboard layouts](#keyboard-layouts).
@@ -173,6 +179,27 @@ make build   # ./jetbrains-keymap-to-vscode
 make test
 make dist    # binaries for all platforms in dist/
 ```
+
+## Conflicts with VS Code's own shortcuts
+
+VS Code runs exactly one command per key press: the last matching rule whose
+`when` clause is true, and your `keybindings.json` wins over the defaults. So
+two actions never run at once. But a generated shortcut does override VS Code's
+default on the same key wherever its `when` clause matches. The report lists:
+
+- keys bound to different commands in the same context within the generated
+  block,
+- keys you already use in your own keybindings outside the block.
+
+## Maintaining the action table
+
+- Every command in the table is checked against an installed VS Code by
+  `go test ./internal/convert/ -run CommandsExist`. The test needs VS Code on
+  the machine (set `VSCODE_APP` to its `app` directory) and is skipped
+  otherwise, for example in CI.
+- Actions that only work inside a JetBrains tool window (for example dropping
+  a stash) are not mapped: the VS Code command would act on the same key
+  everywhere.
 
 ## Known limitations
 
