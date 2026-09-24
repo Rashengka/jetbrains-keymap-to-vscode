@@ -5,6 +5,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -30,9 +31,9 @@ Usage:
   jetbrains-keymap-to-vscode list                 show detected JetBrains IDEs
   jetbrains-keymap-to-vscode convert [flags]      show what would be written (dry run)
   jetbrains-keymap-to-vscode convert --apply      write it (keybindings.json is backed up first)
-  jetbrains-keymap-to-vscode restore              list backups of keybindings.json
-  jetbrains-keymap-to-vscode restore <backup> --apply
-                                                  restore a backup (the current file is backed up first)
+  jetbrains-keymap-to-vscode restore [<backup>]   show what restoring a backup would change (default: newest)
+  jetbrains-keymap-to-vscode restore [<backup>] --apply
+                                                  restore it (the current file is backed up first)
   jetbrains-keymap-to-vscode version
 
 Run "jetbrains-keymap-to-vscode <command> -h" for the flags of a command.
@@ -203,7 +204,7 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	keymapName := fs.String("keymap", "", "keymap to read (default: the one active in the IDE)")
 	platform := fs.String("platform", runtime.GOOS, "modifier names for: darwin, windows or linux")
 	apply := fs.Bool("apply", false, "write keybindings.json (without it nothing is written)")
-	verbose := fs.Bool("v", false, "list every skipped shortcut instead of the first few")
+	verbose := fs.Bool("v", false, "show the exact JSON block and every skipped shortcut")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
@@ -290,13 +291,13 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	}
 	fmt.Fprintf(stdout, "\nScope:   %s\nTarget:  %s\n\n", scope, path)
 
-	if *apply {
-		fmt.Fprint(stdout, report(res, sel, outside, *verbose))
-	} else {
-		fmt.Fprintln(stdout, "Block that would be written:")
+	if *verbose {
+		fmt.Fprintln(stdout, "Block in keybindings.json:")
 		fmt.Fprintln(stdout, blockPreview(updated))
-		fmt.Fprint(stdout, report(res, sel, outside, *verbose))
+	} else {
+		fmt.Fprint(stdout, bindingTable(res.Bindings))
 	}
+	fmt.Fprint(stdout, report(res, sel, outside, *verbose))
 
 	if bytes.Equal(updated, current) {
 		fmt.Fprintln(stdout, "\nkeybindings.json is already up to date; nothing to write.")
@@ -320,6 +321,20 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 		fmt.Fprintf(stdout, "Written: %s\n", path)
 	}
 	return nil
+}
+
+// bindingTable is the short form of the block: one line per keybinding.
+func bindingTable(bs []convert.Binding) string {
+	var b strings.Builder
+	fmt.Fprintln(&b, "Keybindings (use -v for the exact JSON block):")
+	for _, x := range bs {
+		line := fmt.Sprintf("  %-24s %-44s %s", x.Key, x.Command, x.Action)
+		if x.When != "" {
+			line += "  [when " + x.When + "]"
+		}
+		fmt.Fprintln(&b, line)
+	}
+	return b.String()
 }
 
 // blockPreview returns only the managed block of the file.
@@ -402,6 +417,7 @@ func cmdRestore(args []string, stdout, stderr io.Writer) error {
 	var t targetFlags
 	t.register(fs)
 	apply := fs.Bool("apply", false, "restore the backup (without it nothing is written)")
+	verbose := fs.Bool("v", false, "list the keybindings that the restore adds and removes")
 	// Allow the backup name before or after the flags.
 	var positional []string
 	for len(args) > 0 {
@@ -414,38 +430,40 @@ func cmdRestore(args []string, stdout, stderr io.Writer) error {
 			args = args[1:]
 		}
 	}
+	if len(positional) > 1 {
+		return errors.New("restore takes one backup name")
+	}
 	path, err := t.path()
 	if err != nil {
 		return err
 	}
-	if len(positional) == 0 {
-		list, err := vscode.ListBackups(path)
-		if err != nil {
-			return err
-		}
-		if len(list) == 0 {
-			fmt.Fprintf(stdout, "No backups of %s.\n", path)
-			return nil
-		}
-		fmt.Fprintf(stdout, "Backups of %s (oldest first):\n", path)
-		for _, b := range list {
-			fmt.Fprintf(stdout, "  %s\n", filepath.Base(b))
-		}
-		fmt.Fprintln(stdout, "\nRestore one with: restore <name> --apply")
+	list, err := vscode.ListBackups(path)
+	if err != nil {
+		return err
+	}
+	if len(list) == 0 {
+		fmt.Fprintf(stdout, "No backups of %s.\n", path)
 		return nil
 	}
-	if len(positional) > 1 {
-		return errors.New("restore takes one backup name")
+	fmt.Fprintf(stdout, "Backups of %s (oldest first):\n", path)
+	for _, b := range list {
+		fmt.Fprintf(stdout, "  %s\n", filepath.Base(b))
 	}
-	backup, err := vscode.ResolveBackup(path, positional[0])
-	if err != nil {
+	var backup string
+	if len(positional) == 0 {
+		// The newest backup is the state before the last write by this tool,
+		// so restoring it undoes that write (and a second restore undoes the restore).
+		backup = list[len(list)-1]
+		fmt.Fprintf(stdout, "\nNo backup given: using the newest one, the state before the last change made by this tool.\n")
+	} else if backup, err = vscode.ResolveBackup(path, positional[0]); err != nil {
 		return err
 	}
 	data, err := os.ReadFile(backup)
 	if err != nil {
 		return err
 	}
-	if _, err := vscode.ParseKeybindings(data); err != nil {
+	fromBackup, err := vscode.ParseKeybindings(data)
+	if err != nil {
 		return fmt.Errorf("%s is not a valid keybindings file, refusing to restore it: %w", backup, err)
 	}
 	current, exists, err := vscode.ReadCurrent(path)
@@ -453,11 +471,26 @@ func cmdRestore(args []string, stdout, stderr io.Writer) error {
 		return err
 	}
 	if exists && bytes.Equal(current, data) {
-		fmt.Fprintf(stdout, "%s already has the content of %s; nothing to do.\n", path, filepath.Base(backup))
+		fmt.Fprintf(stdout, "\n%s already has the content of %s; nothing to do.\n", path, filepath.Base(backup))
 		return nil
 	}
+	var inCurrent []vscode.RawBinding
+	if exists {
+		inCurrent, _ = vscode.ParseKeybindings(current)
+	}
+	added, removed := diffBindings(inCurrent, fromBackup)
+	fmt.Fprintf(stdout, "\nRestore %s from %s: %d keybindings now, %d after (+%d, -%d).\n",
+		filepath.Base(path), filepath.Base(backup), len(inCurrent), len(fromBackup), len(added), len(removed))
+	if *verbose {
+		for _, b := range removed {
+			fmt.Fprintf(stdout, "  - %s\n", describeBinding(b))
+		}
+		for _, b := range added {
+			fmt.Fprintf(stdout, "  + %s\n", describeBinding(b))
+		}
+	}
 	if !*apply {
-		fmt.Fprintf(stdout, "Would restore %s from %s.\nDry run: nothing was written. Add --apply to restore (the current file is backed up first).\n", path, filepath.Base(backup))
+		fmt.Fprintln(stdout, "Dry run: nothing was written. Add --apply to restore (the current file is backed up first); -v lists the changes.")
 		return nil
 	}
 	wr, err := vscode.Write(path, current, data, exists, time.Now())
@@ -469,4 +502,50 @@ func cmdRestore(args []string, stdout, stderr io.Writer) error {
 	}
 	fmt.Fprintf(stdout, "Restored %s from %s\n", path, filepath.Base(backup))
 	return nil
+}
+
+func bindingID(b vscode.RawBinding) string {
+	var args bytes.Buffer
+	if len(b.Args) > 0 && json.Compact(&args, b.Args) != nil {
+		args.Reset()
+		args.Write(b.Args)
+	}
+	return b.Key + "\x00" + b.Command + "\x00" + b.When + "\x00" + args.String()
+}
+
+// diffBindings returns bindings present only in after (added) and only in before (removed).
+func diffBindings(before, after []vscode.RawBinding) (added, removed []vscode.RawBinding) {
+	count := map[string]int{}
+	for _, b := range before {
+		count[bindingID(b)]++
+	}
+	for _, b := range after {
+		id := bindingID(b)
+		if count[id] > 0 {
+			count[id]--
+			continue
+		}
+		added = append(added, b)
+	}
+	left := map[string]int{}
+	for _, b := range after {
+		left[bindingID(b)]++
+	}
+	for _, b := range before {
+		id := bindingID(b)
+		if left[id] > 0 {
+			left[id]--
+			continue
+		}
+		removed = append(removed, b)
+	}
+	return added, removed
+}
+
+func describeBinding(b vscode.RawBinding) string {
+	s := fmt.Sprintf("%-24s %s", b.Key, b.Command)
+	if b.When != "" {
+		s += "  [when " + b.When + "]"
+	}
+	return s
 }

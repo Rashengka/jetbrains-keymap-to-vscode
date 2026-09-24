@@ -91,7 +91,7 @@ func TestConvertDryRunWritesNothing(t *testing.T) {
 	if code != 0 {
 		t.Fatalf("exit %d: %s", code, out)
 	}
-	for _, want := range []string{"TestIDE 2026.1", "ignored older version TestIDE2025.3", `"key": "shift+cmd+d"`, "Dry run: nothing was written"} {
+	for _, want := range []string{"TestIDE 2026.1", "ignored older version TestIDE2025.3", "shift+cmd+d", "Dry run: nothing was written"} {
 		if !strings.Contains(out, want) {
 			t.Errorf("missing %q in output:\n%s", want, out)
 		}
@@ -129,11 +129,14 @@ func TestConvertApplyBacksUpAndRestoreWorks(t *testing.T) {
 		t.Errorf("second run should be a no-op: %s", out)
 	}
 
-	out, _ = f.run(t, "restore", "--keybindings", f.keybindings, filepath.Base(backups[0]))
-	if !strings.Contains(out, "Dry run") {
-		t.Errorf("restore without --apply must not write: %s", out)
+	out, _ = f.run(t, "restore", "--keybindings", f.keybindings, "-v")
+	if !strings.Contains(out, "Dry run") || !strings.Contains(out, "using the newest one") || !strings.Contains(out, "- cmd+o") {
+		t.Errorf("restore without --apply must be a dry run of the newest backup: %s", out)
 	}
-	out, code = f.run(t, "restore", filepath.Base(backups[0]), "--keybindings", f.keybindings, "--apply")
+	if b, _ := os.ReadFile(f.keybindings); string(b) != string(written) {
+		t.Error("dry-run restore changed the file")
+	}
+	out, code = f.run(t, "restore", "--keybindings", f.keybindings, "--apply")
 	if code != 0 {
 		t.Fatalf("restore failed: %s", out)
 	}
@@ -142,6 +145,23 @@ func TestConvertApplyBacksUpAndRestoreWorks(t *testing.T) {
 	}
 	if b, _ := filepath.Glob(f.keybindings + ".*.bak"); len(b) != 2 {
 		t.Errorf("restore must back up the current file first, backups: %v", b)
+	}
+	// An explicit name still works.
+	out, code = f.run(t, "restore", filepath.Base(backups[0]), "--keybindings", f.keybindings)
+	if code != 0 || !strings.Contains(out, "nothing to do") {
+		t.Errorf("explicit backup: %d %s", code, out)
+	}
+}
+
+func TestConvertVerboseShowsJSONBlock(t *testing.T) {
+	f := newFixture(t)
+	out, _ := f.run(t, f.convertArgs()...)
+	if strings.Contains(out, `"key":`) {
+		t.Error("the default dry run shows the short table, not JSON")
+	}
+	out, _ = f.run(t, f.convertArgs("-v")...)
+	if !strings.Contains(out, `"key": "shift+cmd+d"`) {
+		t.Errorf("-v must show the JSON block: %s", out)
 	}
 }
 

@@ -43,8 +43,11 @@ The transfer is one-way: JetBrains → VS Code.
   place. If `keybindings.json` changed while the tool was running (for example,
   you saved it in VS Code), the tool refuses to write. If `keybindings.json` is
   a symlink (dotfiles), the tool writes to the file it points to.
-- **Restore.** `restore` lists backups, and `restore <backup> --apply` puts one
-  back. The current file is backed up first, so a restore can be undone too.
+- **Restore.** `restore` shows what restoring the newest backup would change;
+  `restore --apply` does it. The newest backup is the state before the last
+  change made by the tool, so this undoes that change. Name a backup to restore
+  an older one. The current file is backed up first, so a restore can be undone
+  too.
 
 ## Usage
 
@@ -59,8 +62,14 @@ jetbrains-keymap-to-vscode convert --ide phpstorm
 # Write it
 jetbrains-keymap-to-vscode convert --ide phpstorm --apply
 
-# List backups and restore one
-jetbrains-keymap-to-vscode restore
+# Show the exact JSON block and every skipped shortcut
+jetbrains-keymap-to-vscode convert --ide phpstorm -v
+
+# Undo the last change: dry run first, then for real
+jetbrains-keymap-to-vscode restore -v
+jetbrains-keymap-to-vscode restore --apply
+
+# Restore a specific backup
 jetbrains-keymap-to-vscode restore keybindings.json.2026-09-24T11-33-05.bak --apply
 ```
 
@@ -87,7 +96,7 @@ bundled keymaps are. `custom` works with only the configuration directory.
 | `--keymap NAME` | Read this keymap instead of the one active in the IDE |
 | `--config-root DIR` | Directory with JetBrains configuration directories |
 | `--ide-home DIR` | IDE installation directory (the one containing `lib/`) |
-| `-v` | List every skipped shortcut in the report |
+| `-v` | Show the exact JSON block and list every skipped shortcut (with `restore`: list the keybindings it adds and removes) |
 
 ## What is not converted
 
