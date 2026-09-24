@@ -289,3 +289,43 @@ func TestFileInput(t *testing.T) {
 		t.Errorf("file without IDE (%d): %s", code, out)
 	}
 }
+
+func TestFileInputVSCodeKeybindings(t *testing.T) {
+	f := newFixture(t)
+	prepared := filepath.Join(t.TempDir(), "keybindings.json")
+	must(t, os.WriteFile(prepared, []byte(`// prepared on another machine
+[
+  { "key": "cmd+shift+g", "command": "workbench.action.gotoLine" },
+  { "key": "ctrl+alt+t", "command": "workbench.action.terminal.new", "when": "!terminalFocus" }, // trailing comma next
+]
+`), 0o644))
+	base := []string{"convert", "--keybindings", f.keybindings, "--platform", "darwin", "--layout", "none", "--file", prepared}
+
+	out, code := f.run(t, append(base, "--apply")...)
+	if code != 0 || !strings.Contains(out, "copied as they are") {
+		t.Fatalf("exit %d: %s", code, out)
+	}
+	written, _ := os.ReadFile(f.keybindings)
+	for _, want := range []string{"// my file", "copied from file keybindings.json", `"key": "cmd+shift+g"`, `"when": "!terminalFocus"`} {
+		if !strings.Contains(string(written), want) {
+			t.Errorf("missing %q:\n%s", want, written)
+		}
+	}
+	// --keep-key matches the prepared key even though it is written in another order.
+	out, _ = f.run(t, append(base, "--keep-key", "shift+cmd+g", "--apply")...)
+	written, _ = os.ReadFile(f.keybindings)
+	if strings.Contains(string(written), `"key": "cmd+shift+g"`) || !strings.Contains(out, "not written") {
+		t.Errorf("kept key still written:\n%s\n%s", out, written)
+	}
+
+	// The target itself cannot be the input.
+	out, code = f.run(t, "convert", "--keybindings", f.keybindings, "--file", f.keybindings, "--layout", "none")
+	if code == 0 || !strings.Contains(out, "being written") {
+		t.Errorf("same file must be refused: %d %s", code, out)
+	}
+	// Unknown extension.
+	out, code = f.run(t, "convert", "--keybindings", f.keybindings, "--file", "keys.txt")
+	if code == 0 || !strings.Contains(out, "unknown type") {
+		t.Errorf("unknown type must be refused: %d %s", code, out)
+	}
+}

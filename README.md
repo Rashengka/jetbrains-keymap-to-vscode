@@ -95,7 +95,7 @@ bundled keymaps are. `custom` works with only the configuration directory.
 | `--ide NAME` | IDE to read: `phpstorm`, `goland`, `IntelliJIdea`, … (a unique prefix is enough) |
 | `--target NAME` | `code` (default), `insiders`, `vscodium` or `cursor` |
 | `--keybindings PATH` | Write to this file instead of the target's `keybindings.json` |
-| `--file PATH` | Read a JetBrains keymap you prepared instead of the IDE's own: a keymap `.xml`, or a settings export `.zip` (File → Manage IDE Settings → Export Settings) |
+| `--file PATH` | Use a file you prepared instead of the IDE's keymap, recognized by extension: a JetBrains keymap `.xml`, a JetBrains settings export `.zip` (File → Manage IDE Settings → Export Settings), or a VS Code keybindings `.json` |
 | `--keymap NAME` | Read this keymap instead of the one active in the IDE or in `--file` |
 | `--keep-key KEY` | Leave this key to VS Code, e.g. `cmd+g` or `cmd+ě` (repeatable, remembered) |
 | `--unkeep-key KEY` | Take a key off that list again |
@@ -216,11 +216,17 @@ If you prefer to fix a key by hand, add your own rule **below** the
 tool never touches lines outside the block. Do not edit inside the block:
 the next run replaces it.
 
-### Using a keymap file
+### Using a prepared file
 
-`--file` reads a keymap you prepared, for example exported from another
-machine. The IDE is still used for the bundled keymaps it inherits from. With
-`--scope custom` the file alone is enough.
+`--file` reads a file you prepared, for example on another machine. The type
+comes from the extension:
+
+- `.xml` or `.zip`: a JetBrains keymap or settings export. It is converted like
+  the IDE's own keymap. The installed IDE is still used for the bundled keymaps
+  it inherits from. With `--scope custom` the file alone is enough.
+- `.json`: VS Code keybindings (any file name). They are copied into the
+  managed block as they are, with the same backup, dry run and `--keep-key`
+  handling. The file you write to cannot be the input.
 
 ## Maintaining the action table
 

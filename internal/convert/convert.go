@@ -314,7 +314,7 @@ func Convert(sel keymap.Selection, t Table, p Platform, lay *layout.Layout) Resu
 			}
 		}
 	}
-	r.Conflict = findConflicts(r.Bindings)
+	r.Conflict = FindConflicts(r.Bindings)
 	return r
 }
 
@@ -334,7 +334,8 @@ func plainKey(key string) bool {
 	return true
 }
 
-func findConflicts(bs []Binding) []Conflict {
+// FindConflicts lists keys bound to different commands under the same when clause.
+func FindConflicts(bs []Binding) []Conflict {
 	groups := map[string][]Binding{}
 	var order []string
 	for _, b := range bs {

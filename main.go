@@ -201,7 +201,7 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	d.register(fs)
 	t.register(fs)
 	ideName := fs.String("ide", "", "IDE to read, e.g. PhpStorm or GoLand (asked interactively when omitted)")
-	file := fs.String("file", "", "read this JetBrains keymap instead of the IDE's own: a keymap .xml or a settings export .zip")
+	file := fs.String("file", "", "input instead of the IDE's keymap: JetBrains keymap .xml, JetBrains settings export .zip, or a VS Code keybindings .json (copied as it is)")
 	scopeName := fs.String("scope", "custom", "custom: only your changes; all: defaults plus your changes; default: defaults without your changes")
 	keymapName := fs.String("keymap", "", "keymap to read (default: the one active in the IDE or in --file)")
 	platform := fs.String("platform", runtime.GOOS, "modifier names for: darwin, windows or linux")
@@ -222,73 +222,95 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 		return err
 	}
 
-	// The IDE provides the bundled keymaps the user keymap inherits from. With
-	// --file and --scope custom it is optional.
-	var chosen *ide.IDE
-	ides, err := d.detect()
-	if err == nil {
-		var c ide.IDE
-		if c, err = chooseIDE(ides, *ideName, stdin, stdout); err == nil {
-			chosen = &c
-		}
-	}
-	if err != nil && (*file == "" || *ideName != "") {
-		return err
-	}
-	home := d.ideHome
-	if home == "" && chosen != nil && chosen.Install != nil {
-		home = chosen.Install.Home
-	}
-
-	set := keymap.NewSet()
-	if home != "" {
-		st, err := keymap.LoadInstall(set, home)
-		if err != nil {
-			return err
-		}
-		for _, w := range st.Warnings {
-			fmt.Fprintln(stderr, "warning:", w)
-		}
-	} else if scope != keymap.ScopeCustom {
-		return fmt.Errorf("no IDE installation found; --scope %s needs its bundled keymaps (pass --ide or --ide-home)", scope)
-	}
-	active := *keymapName
-	var source string
-	if *file != "" {
-		fileActive, err := keymap.LoadFile(set, *file)
-		if err != nil {
-			return err
-		}
-		if active == "" {
-			active = fileActive
-		}
-		source = "file " + filepath.Base(*file)
-	} else {
-		if err := keymap.LoadUserKeymaps(set, chosen.Config.Dir); err != nil {
-			return err
-		}
-		if active == "" {
-			active = ide.ActiveKeymapName(chosen.Config.Dir)
-		}
-		source = fmt.Sprintf("%s %s", chosen.DisplayName(), chosen.Config.Version)
-	}
-	if active == "" {
-		active = ide.DefaultKeymapName()
-	}
-	sel, err := set.Select(active, scope)
-	if err != nil {
-		return err
-	}
 	lay, layoutNote, err := chooseLayout(*layoutName, *platform)
 	if err != nil {
 		return err
 	}
-	res := convert.Convert(sel, convert.DefaultTable(), convert.Platform(*platform), lay)
-
 	path, err := t.path()
 	if err != nil {
 		return err
 	}
+	var (
+		chosen               *ide.IDE
+		home, source, active string
+		sel                  keymap.Selection
+		res                  convert.Result
+	)
+	if *file != "" {
+		switch strings.ToLower(filepath.Ext(*file)) {
+		case ".json", ".xml", ".zip":
+		default:
+			return fmt.Errorf("--file %s: unknown type; use a VS Code .json, a JetBrains keymap .xml or a JetBrains settings export .zip", *file)
+		}
+	}
+	vscodeInput := *file != "" && strings.EqualFold(filepath.Ext(*file), ".json")
+	if vscodeInput {
+		// A keybindings.json prepared elsewhere: copied into the block as it is.
+		res, err = bindingsFromFile(*file, path)
+		if err != nil {
+			return err
+		}
+		source = "file " + filepath.Base(*file)
+		sel = keymap.Selection{Entries: make([]keymap.Entry, len(res.Bindings))}
+	} else {
+		// The IDE provides the bundled keymaps the user keymap inherits from. With
+		// --file and --scope custom it is optional.
+		ides, err := d.detect()
+		if err == nil {
+			var c ide.IDE
+			if c, err = chooseIDE(ides, *ideName, stdin, stdout); err == nil {
+				chosen = &c
+			}
+		}
+		if err != nil && (*file == "" || *ideName != "") {
+			return err
+		}
+		home = d.ideHome
+		if home == "" && chosen != nil && chosen.Install != nil {
+			home = chosen.Install.Home
+		}
+
+		set := keymap.NewSet()
+		if home != "" {
+			st, err := keymap.LoadInstall(set, home)
+			if err != nil {
+				return err
+			}
+			for _, w := range st.Warnings {
+				fmt.Fprintln(stderr, "warning:", w)
+			}
+		} else if scope != keymap.ScopeCustom {
+			return fmt.Errorf("no IDE installation found; --scope %s needs its bundled keymaps (pass --ide or --ide-home)", scope)
+		}
+		active = *keymapName
+		if *file != "" {
+			fileActive, err := keymap.LoadFile(set, *file)
+			if err != nil {
+				return err
+			}
+			if active == "" {
+				active = fileActive
+			}
+			source = "file " + filepath.Base(*file)
+		} else {
+			if err := keymap.LoadUserKeymaps(set, chosen.Config.Dir); err != nil {
+				return err
+			}
+			if active == "" {
+				active = ide.ActiveKeymapName(chosen.Config.Dir)
+			}
+			source = fmt.Sprintf("%s %s", chosen.DisplayName(), chosen.Config.Version)
+		}
+		if active == "" {
+			active = ide.DefaultKeymapName()
+		}
+		sel, err = set.Select(active, scope)
+		if err != nil {
+			return err
+		}
+		res = convert.Convert(sel, convert.DefaultTable(), convert.Platform(*platform), lay)
+	}
+
 	current, exists, err := vscode.ReadCurrent(path)
 	if err != nil {
 		return err
@@ -298,20 +320,27 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 		return err
 	}
 	var kept []convert.Binding
-	res.Bindings, kept = splitKept(res.Bindings, keep)
+	res.Bindings, kept = splitKept(res.Bindings, keep, convert.Platform(*platform), lay)
+	if vscodeInput {
+		res.Conflict = convert.FindConflicts(res.Bindings)
+	}
 
 	var entries []vscode.Entry
 	for _, b := range res.Bindings {
-		entries = append(entries, vscode.Entry{
-			Comment: fmt.Sprintf("%s (%s)", b.Action, b.Shortcut),
-			Key:     b.Key, Command: b.Command, When: b.When, Args: b.Args,
-		})
+		e := vscode.Entry{Key: b.Key, Command: b.Command, When: b.When, Args: b.Args}
+		if b.Action != "" {
+			e.Comment = fmt.Sprintf("%s (%s)", b.Action, b.Shortcut)
+		}
+		entries = append(entries, e)
 	}
 	layoutPart := ""
 	if lay != nil {
 		layoutPart = ", layout " + lay.Name()
 	}
 	header := fmt.Sprintf("generated from %s, keymap %q, scope %s%s; edits inside this block are replaced on the next run", source, active, scope, layoutPart)
+	if vscodeInput {
+		header = fmt.Sprintf("copied from %s; edits inside this block are replaced on the next run", source)
+	}
 	updated, err := vscode.Apply(current, entries, header, keep)
 	if err != nil {
 		return fmt.Errorf("%s: %w", path, err)
@@ -330,11 +359,15 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	if home != "" {
 		fmt.Fprintf(stdout, "Install: %s\n", home)
 	}
-	fmt.Fprintf(stdout, "Keymap:  %q", sel.Keymap)
-	if sel.Base != "" && sel.Base != sel.Keymap {
-		fmt.Fprintf(stdout, " (based on %q)", sel.Base)
+	if vscodeInput {
+		fmt.Fprintf(stdout, "Input:   VS Code keybindings, copied as they are\nTarget:  %s\n\n", path)
+	} else {
+		fmt.Fprintf(stdout, "Keymap:  %q", sel.Keymap)
+		if sel.Base != "" && sel.Base != sel.Keymap {
+			fmt.Fprintf(stdout, " (based on %q)", sel.Base)
+		}
+		fmt.Fprintf(stdout, "\nScope:   %s\nLayout:  %s\nTarget:  %s\n\n", scope, layoutNote, path)
 	}
-	fmt.Fprintf(stdout, "\nScope:   %s\nLayout:  %s\nTarget:  %s\n\n", scope, layoutNote, path)
 
 	if *verbose {
 		fmt.Fprintln(stdout, "Block in keybindings.json:")
@@ -375,6 +408,42 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 		fmt.Fprintf(stdout, "Written: %s\n", path)
 	}
 	return nil
+}
+
+// bindingsFromFile reads a keybindings.json prepared elsewhere. Keys are taken
+// as they are: they are already VS Code keybindings, nothing is converted.
+func bindingsFromFile(file, target string) (convert.Result, error) {
+	var r convert.Result
+	if same, _ := samePath(file, target); same {
+		return r, fmt.Errorf("--file %s is the keybindings.json being written; copy it elsewhere first", file)
+	}
+	data, err := os.ReadFile(file)
+	if err != nil {
+		return r, err
+	}
+	list, err := vscode.ParseKeybindings(data)
+	if err != nil {
+		return r, fmt.Errorf("%s: %w", file, err)
+	}
+	for i, b := range list {
+		if b.Key == "" || b.Command == "" {
+			return r, fmt.Errorf("%s: entry %d has no key or no command", file, i+1)
+		}
+		r.Bindings = append(r.Bindings, convert.Binding{Key: b.Key, Command: b.Command, When: b.When, Args: b.Args})
+	}
+	return r, nil
+}
+
+func samePath(a, b string) (bool, error) {
+	sa, err := os.Stat(a)
+	if err != nil {
+		return false, err
+	}
+	sb, err := os.Stat(b)
+	if err != nil {
+		return false, err
+	}
+	return os.SameFile(sa, sb), nil
 }
 
 // listFlag collects a repeatable flag; values may also be comma-separated.
@@ -438,14 +507,20 @@ func keepList(stored, add, remove []string, p convert.Platform, lay *layout.Layo
 
 // splitKept removes bindings on kept keys. A kept single key also removes
 // chords that start with it, because a chord would capture the first key.
-func splitKept(bs []convert.Binding, keep []string) (write, kept []convert.Binding) {
+func splitKept(bs []convert.Binding, keep []string, p convert.Platform, lay *layout.Layout) (write, kept []convert.Binding) {
 	set := map[string]bool{}
 	for _, k := range keep {
 		set[k] = true
 	}
 	for _, b := range bs {
-		first := strings.Fields(b.Key)[0]
-		if set[b.Key] || set[first] {
+		key := b.Key
+		// Keys from a prepared keybindings.json may be written differently
+		// ("cmd+shift+g", "cmd+ě"); compare them in normalized form.
+		if n, err := convert.NormalizeUserKey(b.Key, p, lay); err == nil {
+			key = n
+		}
+		first := strings.Fields(key)[0]
+		if set[b.Key] || set[key] || set[first] {
 			kept = append(kept, b)
 			continue
 		}
