@@ -329,3 +329,22 @@ func TestFileInputVSCodeKeybindings(t *testing.T) {
 		t.Errorf("unknown type must be refused: %d %s", code, out)
 	}
 }
+
+func TestKeepRecommendedIsRemembered(t *testing.T) {
+	f := newFixture(t)
+	// GotoClass is on cmd+o in the fixture: VS Code's default "Open File".
+	out, code := f.run(t, f.convertArgs("--scope", "all", "--keep-recommended", "--apply")...)
+	written, _ := os.ReadFile(f.keybindings)
+	if code != 0 || strings.Contains(string(written), `"cmd+o"`) || !strings.Contains(out, "VS Code default") {
+		t.Fatalf("cmd+o must be left to VS Code (%d):\n%s\n%s", code, out, written)
+	}
+	out, _ = f.run(t, f.convertArgs("--scope", "all", "--apply")...)
+	if !strings.Contains(out, "already up to date") {
+		t.Errorf("--keep-recommended must be remembered: %s", out)
+	}
+	f.run(t, f.convertArgs("--scope", "all", "--unkeep-key", "recommended", "--apply")...)
+	written, _ = os.ReadFile(f.keybindings)
+	if !strings.Contains(string(written), `"cmd+o"`) {
+		t.Errorf("--unkeep-key recommended must bring cmd+o back:\n%s", written)
+	}
+}

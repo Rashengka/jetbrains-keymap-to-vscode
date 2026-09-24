@@ -223,3 +223,25 @@ func TestNormalizeUserKey(t *testing.T) {
 		t.Error("unknown modifier accepted")
 	}
 }
+
+func TestComparableKeyAndRecommended(t *testing.T) {
+	if got := ComparableKey("shift+cmd+[Digit2] cmd+[KeyK]"); got != "shift+cmd+2 cmd+k" {
+		t.Errorf("got %q", got)
+	}
+	if got := ComparableKey("cmd+[Quote]"); got != "cmd+[Quote]" {
+		t.Errorf("other scan codes stay: %q", got)
+	}
+	mac := DefaultRecommended(Mac)
+	if r := mac["cmd+f"]; r.Command != "actions.find" {
+		t.Errorf("cmd+f: %+v", r)
+	}
+	if r := mac[ComparableKey("cmd+[Digit2]")]; r.Command != "workbench.action.focusSecondEditorGroup" {
+		t.Errorf("cmd+[Digit2] must hit the editor-group default: %+v", r)
+	}
+	if r := DefaultRecommended(Windows)["ctrl+f"]; r.Command != "actions.find" {
+		t.Errorf("windows ctrl+f: %+v", r)
+	}
+	if len(mac) < 100 {
+		t.Errorf("too few defaults: %d", len(mac))
+	}
+}

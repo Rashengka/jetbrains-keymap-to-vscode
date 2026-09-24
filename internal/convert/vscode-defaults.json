@@ -1,0 +1,1145 @@
+{
+  "source": "https://code.visualstudio.com/docs/reference/default-keybindings",
+  "fetched": "2026-09-24",
+  "entries": [
+    {
+      "name": "Cut line (empty selection)",
+      "command": "editor.action.clipboardCutAction",
+      "mac": "cmd+x",
+      "windows": "ctrl+x",
+      "linux": "ctrl+x"
+    },
+    {
+      "name": "Copy line (empty selection)",
+      "command": "editor.action.clipboardCopyAction",
+      "mac": "cmd+c",
+      "windows": "ctrl+c",
+      "linux": "ctrl+c"
+    },
+    {
+      "name": "Paste",
+      "command": "editor.action.clipboardPasteAction",
+      "mac": "cmd+v",
+      "windows": "ctrl+v",
+      "linux": "ctrl+v"
+    },
+    {
+      "name": "Delete Line",
+      "command": "editor.action.deleteLines",
+      "mac": "shift+cmd+k",
+      "windows": "ctrl+shift+k",
+      "linux": "ctrl+shift+k"
+    },
+    {
+      "name": "Insert Line Below",
+      "command": "editor.action.insertLineAfter",
+      "mac": "cmd+enter",
+      "windows": "ctrl+enter",
+      "linux": "ctrl+enter"
+    },
+    {
+      "name": "Insert Line Above",
+      "command": "editor.action.insertLineBefore",
+      "mac": "shift+cmd+enter",
+      "windows": "ctrl+shift+enter",
+      "linux": "ctrl+shift+enter"
+    },
+    {
+      "name": "Move Line Down",
+      "command": "editor.action.moveLinesDownAction",
+      "mac": "alt+down",
+      "windows": "alt+down",
+      "linux": "alt+down"
+    },
+    {
+      "name": "Move Line Up",
+      "command": "editor.action.moveLinesUpAction",
+      "mac": "alt+up",
+      "windows": "alt+up",
+      "linux": "alt+up"
+    },
+    {
+      "name": "Copy Line Down",
+      "command": "editor.action.copyLinesDownAction",
+      "mac": "shift+alt+down",
+      "windows": "shift+alt+down",
+      "linux": "ctrl+shift+alt+down"
+    },
+    {
+      "name": "Copy Line Up",
+      "command": "editor.action.copyLinesUpAction",
+      "mac": "shift+alt+up",
+      "windows": "shift+alt+up",
+      "linux": "ctrl+shift+alt+up"
+    },
+    {
+      "name": "Undo",
+      "command": "undo",
+      "mac": "cmd+z",
+      "windows": "ctrl+z",
+      "linux": "ctrl+z"
+    },
+    {
+      "name": "Redo",
+      "command": "redo",
+      "mac": "shift+cmd+z",
+      "windows": "ctrl+y",
+      "linux": "ctrl+y"
+    },
+    {
+      "name": "Add Selection To Next Find Match",
+      "command": "editor.action.addSelectionToNextFindMatch",
+      "mac": "cmd+d",
+      "windows": "ctrl+d",
+      "linux": "ctrl+d"
+    },
+    {
+      "name": "Move Last Selection To Next Find Match",
+      "command": "editor.action.moveSelectionToNextFindMatch",
+      "mac": "cmd+k cmd+d",
+      "windows": "ctrl+k ctrl+d",
+      "linux": "ctrl+k ctrl+d"
+    },
+    {
+      "name": "Undo last cursor operation",
+      "command": "cursorUndo",
+      "mac": "cmd+u",
+      "windows": "ctrl+u",
+      "linux": "ctrl+u"
+    },
+    {
+      "name": "Insert cursor at end of each line selected",
+      "command": "editor.action.insertCursorAtEndOfEachLineSelected",
+      "mac": "shift+alt+i",
+      "windows": "shift+alt+i",
+      "linux": "shift+alt+i"
+    },
+    {
+      "name": "Select all occurrences of current selection",
+      "command": "editor.action.selectHighlights",
+      "mac": "shift+cmd+l",
+      "windows": "ctrl+shift+l",
+      "linux": "ctrl+shift+l"
+    },
+    {
+      "name": "Select all occurrences of current word",
+      "command": "editor.action.changeAll",
+      "mac": "cmd+f2",
+      "windows": "ctrl+f2",
+      "linux": "ctrl+f2"
+    },
+    {
+      "name": "Select current line",
+      "command": "expandLineSelection",
+      "mac": "cmd+l",
+      "windows": "ctrl+l",
+      "linux": "ctrl+l"
+    },
+    {
+      "name": "Insert Cursor Below",
+      "command": "editor.action.insertCursorBelow",
+      "mac": "alt+cmd+down",
+      "windows": "ctrl+alt+down",
+      "linux": "shift+alt+down"
+    },
+    {
+      "name": "Insert Cursor Above",
+      "command": "editor.action.insertCursorAbove",
+      "mac": "alt+cmd+up",
+      "windows": "ctrl+alt+up",
+      "linux": "shift+alt+up"
+    },
+    {
+      "name": "Jump to matching bracket",
+      "command": "editor.action.jumpToBracket",
+      "mac": "shift+cmd+\\",
+      "windows": "ctrl+shift+\\",
+      "linux": "ctrl+shift+\\"
+    },
+    {
+      "name": "Indent Line",
+      "command": "editor.action.indentLines",
+      "mac": "cmd+]",
+      "windows": "ctrl+]",
+      "linux": "ctrl+]"
+    },
+    {
+      "name": "Outdent Line",
+      "command": "editor.action.outdentLines",
+      "mac": "cmd+[",
+      "windows": "ctrl+[",
+      "linux": "ctrl+["
+    },
+    {
+      "name": "Go to Beginning of Line",
+      "command": "cursorHome",
+      "mac": "home",
+      "windows": "home",
+      "linux": "home"
+    },
+    {
+      "name": "Go to End of Line",
+      "command": "cursorEnd",
+      "mac": "end",
+      "windows": "end",
+      "linux": "end"
+    },
+    {
+      "name": "Go to End of File",
+      "command": "cursorBottom",
+      "mac": "cmd+down",
+      "windows": "ctrl+end",
+      "linux": "ctrl+end"
+    },
+    {
+      "name": "Go to Beginning of File",
+      "command": "cursorTop",
+      "mac": "cmd+up",
+      "windows": "ctrl+home",
+      "linux": "ctrl+home"
+    },
+    {
+      "name": "Scroll Line Down",
+      "command": "scrollLineDown",
+      "mac": "ctrl+pagedown",
+      "windows": "ctrl+down",
+      "linux": "ctrl+down"
+    },
+    {
+      "name": "Scroll Line Up",
+      "command": "scrollLineUp",
+      "mac": "ctrl+pageup",
+      "windows": "ctrl+up",
+      "linux": "ctrl+up"
+    },
+    {
+      "name": "Scroll Page Down",
+      "command": "scrollPageDown",
+      "mac": "cmd+pagedown",
+      "windows": "alt+pagedown",
+      "linux": "alt+pagedown"
+    },
+    {
+      "name": "Scroll Page Up",
+      "command": "scrollPageUp",
+      "mac": "cmd+pageup",
+      "windows": "alt+pageup",
+      "linux": "alt+pageup"
+    },
+    {
+      "name": "Fold (collapse) region",
+      "command": "editor.fold",
+      "mac": "alt+cmd+[",
+      "windows": "ctrl+shift+[",
+      "linux": "ctrl+shift+["
+    },
+    {
+      "name": "Unfold (uncollapse) region",
+      "command": "editor.unfold",
+      "mac": "alt+cmd+]",
+      "windows": "ctrl+shift+]",
+      "linux": "ctrl+shift+]"
+    },
+    {
+      "name": "Toggle Fold region",
+      "command": "editor.toggleFold",
+      "mac": "cmd+k cmd+l",
+      "windows": "ctrl+k ctrl+l",
+      "linux": "ctrl+k ctrl+l"
+    },
+    {
+      "name": "Fold (collapse) all subregions",
+      "command": "editor.foldRecursively",
+      "mac": "cmd+k cmd+[",
+      "windows": "ctrl+k ctrl+[",
+      "linux": "ctrl+k ctrl+["
+    },
+    {
+      "name": "Unfold (uncollapse) all subregions",
+      "command": "editor.unfoldRecursively",
+      "mac": "cmd+k cmd+]",
+      "windows": "ctrl+k ctrl+]",
+      "linux": "ctrl+k ctrl+]"
+    },
+    {
+      "name": "Fold (collapse) all regions",
+      "command": "editor.foldAll",
+      "mac": "cmd+k cmd+0",
+      "windows": "ctrl+k ctrl+0",
+      "linux": "ctrl+k ctrl+0"
+    },
+    {
+      "name": "Unfold (uncollapse) all regions",
+      "command": "editor.unfoldAll",
+      "mac": "cmd+k cmd+j",
+      "windows": "ctrl+k ctrl+j",
+      "linux": "ctrl+k ctrl+j"
+    },
+    {
+      "name": "Add Line Comment",
+      "command": "editor.action.addCommentLine",
+      "mac": "cmd+k cmd+c",
+      "windows": "ctrl+k ctrl+c",
+      "linux": "ctrl+k ctrl+c"
+    },
+    {
+      "name": "Remove Line Comment",
+      "command": "editor.action.removeCommentLine",
+      "mac": "cmd+k cmd+u",
+      "windows": "ctrl+k ctrl+u",
+      "linux": "ctrl+k ctrl+u"
+    },
+    {
+      "name": "Toggle Line Comment",
+      "command": "editor.action.commentLine",
+      "mac": "cmd+/",
+      "windows": "ctrl+/",
+      "linux": "ctrl+/"
+    },
+    {
+      "name": "Toggle Block Comment",
+      "command": "editor.action.blockComment",
+      "mac": "shift+alt+a",
+      "windows": "shift+alt+a",
+      "linux": "ctrl+shift+a"
+    },
+    {
+      "name": "Find",
+      "command": "actions.find",
+      "mac": "cmd+f",
+      "windows": "ctrl+f",
+      "linux": "ctrl+f"
+    },
+    {
+      "name": "Replace",
+      "command": "editor.action.startFindReplaceAction",
+      "mac": "alt+cmd+f",
+      "windows": "ctrl+h",
+      "linux": "ctrl+h"
+    },
+    {
+      "name": "Find Next",
+      "command": "editor.action.nextMatchFindAction",
+      "mac": "enter",
+      "windows": "enter",
+      "linux": "enter"
+    },
+    {
+      "name": "Find Previous",
+      "command": "editor.action.previousMatchFindAction",
+      "mac": "shift+enter",
+      "windows": "shift+enter",
+      "linux": "shift+enter"
+    },
+    {
+      "name": "Select All Occurrences of Find Match",
+      "command": "editor.action.selectAllMatches",
+      "mac": "alt+enter",
+      "windows": "alt+enter",
+      "linux": "alt+enter"
+    },
+    {
+      "name": "Toggle Find Case Sensitive",
+      "command": "toggleFindCaseSensitive",
+      "mac": "alt+cmd+c",
+      "windows": "alt+c",
+      "linux": "alt+c"
+    },
+    {
+      "name": "Toggle Find Regex",
+      "command": "toggleFindRegex",
+      "mac": "alt+cmd+r",
+      "windows": "alt+r",
+      "linux": "alt+r"
+    },
+    {
+      "name": "Toggle Find Whole Word",
+      "command": "toggleFindWholeWord",
+      "mac": "alt+cmd+w",
+      "windows": "alt+w",
+      "linux": "alt+w"
+    },
+    {
+      "name": "Toggle Use of Tab Key for Setting Focus",
+      "command": "editor.action.toggleTabFocusMode",
+      "mac": "ctrl+shift+m",
+      "windows": "ctrl+m",
+      "linux": "ctrl+m"
+    },
+    {
+      "name": "Toggle Word Wrap",
+      "command": "editor.action.toggleWordWrap",
+      "mac": "alt+z",
+      "windows": "alt+z",
+      "linux": "alt+z"
+    },
+    {
+      "name": "Trigger Suggest",
+      "command": "editor.action.triggerSuggest",
+      "mac": "ctrl+space",
+      "windows": "ctrl+space",
+      "linux": "ctrl+space"
+    },
+    {
+      "name": "Trigger Parameter Hints",
+      "command": "editor.action.triggerParameterHints",
+      "mac": "shift+cmd+space",
+      "windows": "ctrl+shift+space",
+      "linux": "ctrl+shift+space"
+    },
+    {
+      "name": "Format Document",
+      "command": "editor.action.formatDocument",
+      "mac": "shift+alt+f",
+      "windows": "shift+alt+f",
+      "linux": "ctrl+shift+i"
+    },
+    {
+      "name": "Format Selection",
+      "command": "editor.action.formatSelection",
+      "mac": "cmd+k cmd+f",
+      "windows": "ctrl+k ctrl+f",
+      "linux": "ctrl+k ctrl+f"
+    },
+    {
+      "name": "Go to Definition",
+      "command": "editor.action.revealDefinition",
+      "mac": "f12",
+      "windows": "f12",
+      "linux": "f12"
+    },
+    {
+      "name": "Show Hover",
+      "command": "editor.action.showHover",
+      "mac": "cmd+k cmd+i",
+      "windows": "ctrl+k ctrl+i",
+      "linux": "ctrl+k ctrl+i"
+    },
+    {
+      "name": "Peek Definition",
+      "command": "editor.action.peekDefinition",
+      "mac": "alt+f12",
+      "windows": "alt+f12",
+      "linux": "ctrl+shift+f10"
+    },
+    {
+      "name": "Open Definition to the Side",
+      "command": "editor.action.revealDefinitionAside",
+      "mac": "cmd+k f12",
+      "windows": "ctrl+k f12",
+      "linux": "ctrl+k f12"
+    },
+    {
+      "name": "Quick Fix",
+      "command": "editor.action.quickFix",
+      "mac": "cmd+.",
+      "windows": "ctrl+.",
+      "linux": "ctrl+."
+    },
+    {
+      "name": "Go to References",
+      "command": "editor.action.goToReferences",
+      "mac": "shift+f12",
+      "windows": "shift+f12",
+      "linux": "shift+f12"
+    },
+    {
+      "name": "Rename Symbol",
+      "command": "editor.action.rename",
+      "mac": "f2",
+      "windows": "f2",
+      "linux": "f2"
+    },
+    {
+      "name": "Replace with Next Value",
+      "command": "editor.action.inPlaceReplace.down",
+      "mac": "shift+cmd+.",
+      "windows": "ctrl+shift+.",
+      "linux": "ctrl+shift+."
+    },
+    {
+      "name": "Replace with Previous Value",
+      "command": "editor.action.inPlaceReplace.up",
+      "mac": "shift+cmd+,",
+      "windows": "ctrl+shift+,",
+      "linux": "ctrl+shift+,"
+    },
+    {
+      "name": "Expand AST Selection",
+      "command": "editor.action.smartSelect.expand",
+      "mac": "ctrl+shift+cmd+right",
+      "windows": "shift+alt+right",
+      "linux": "shift+alt+right"
+    },
+    {
+      "name": "Shrink AST Selection",
+      "command": "editor.action.smartSelect.shrink",
+      "mac": "ctrl+shift+cmd+left",
+      "windows": "shift+alt+left",
+      "linux": "shift+alt+left"
+    },
+    {
+      "name": "Trim Trailing Whitespace",
+      "command": "editor.action.trimTrailingWhitespace",
+      "mac": "cmd+k cmd+x",
+      "windows": "ctrl+k ctrl+x",
+      "linux": "ctrl+k ctrl+x"
+    },
+    {
+      "name": "Change Language Mode",
+      "command": "workbench.action.editor.changeLanguageMode",
+      "mac": "cmd+k m",
+      "windows": "ctrl+k m",
+      "linux": "ctrl+k m"
+    },
+    {
+      "name": "Show All Symbols",
+      "command": "workbench.action.showAllSymbols",
+      "mac": "cmd+t",
+      "windows": "ctrl+t",
+      "linux": "ctrl+t"
+    },
+    {
+      "name": "Go to Line...",
+      "command": "workbench.action.gotoLine",
+      "mac": "ctrl+g",
+      "windows": "ctrl+g",
+      "linux": "ctrl+g"
+    },
+    {
+      "name": "Go to File..., Quick Open",
+      "command": "workbench.action.quickOpen",
+      "mac": "cmd+p",
+      "windows": "ctrl+p",
+      "linux": "ctrl+p"
+    },
+    {
+      "name": "Go to Symbol...",
+      "command": "workbench.action.gotoSymbol",
+      "mac": "shift+cmd+o",
+      "windows": "ctrl+shift+o",
+      "linux": "ctrl+shift+o"
+    },
+    {
+      "name": "Show Problems",
+      "command": "workbench.actions.view.problems",
+      "mac": "shift+cmd+m",
+      "windows": "ctrl+shift+m",
+      "linux": "ctrl+shift+m"
+    },
+    {
+      "name": "Go to Next Error or Warning",
+      "command": "editor.action.marker.nextInFiles",
+      "mac": "f8",
+      "windows": "f8",
+      "linux": "f8"
+    },
+    {
+      "name": "Go to Previous Error or Warning",
+      "command": "editor.action.marker.prevInFiles",
+      "mac": "shift+f8",
+      "windows": "shift+f8",
+      "linux": "shift+f8"
+    },
+    {
+      "name": "Show All Commands",
+      "command": "workbench.action.showCommands",
+      "mac": "shift+cmd+p",
+      "windows": "ctrl+shift+p) or f1",
+      "linux": "ctrl+shift+p) or f1"
+    },
+    {
+      "name": "Navigate Editor Group History",
+      "command": "workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
+      "mac": "ctrl+tab",
+      "windows": "ctrl+tab",
+      "linux": "ctrl+tab"
+    },
+    {
+      "name": "Go Back",
+      "command": "workbench.action.navigateBack",
+      "mac": "ctrl+-",
+      "windows": "alt+left",
+      "linux": "ctrl+alt+-"
+    },
+    {
+      "name": "Go back in Quick Input",
+      "command": "workbench.action.quickInputBack",
+      "mac": "ctrl+-",
+      "windows": "alt+left",
+      "linux": "ctrl+alt+-"
+    },
+    {
+      "name": "Go Forward",
+      "command": "workbench.action.navigateForward",
+      "mac": "ctrl+shift+-",
+      "windows": "alt+right",
+      "linux": "ctrl+shift+-"
+    },
+    {
+      "name": "Focus Breadcrumbs",
+      "command": "breadcrumbs.focus",
+      "mac": "shift+cmd+;",
+      "windows": "ctrl+shift+;",
+      "linux": "ctrl+shift+;"
+    },
+    {
+      "name": "Focus and Select Breadcrumbs",
+      "command": "breadcrumbs.focusAndSelect",
+      "mac": "shift+cmd+.",
+      "windows": "ctrl+shift+.",
+      "linux": "ctrl+shift+."
+    },
+    {
+      "name": "New Window",
+      "command": "workbench.action.newWindow",
+      "mac": "shift+cmd+n",
+      "windows": "ctrl+shift+n",
+      "linux": "ctrl+shift+n"
+    },
+    {
+      "name": "Close Window",
+      "command": "workbench.action.closeWindow",
+      "mac": "shift+cmd+w",
+      "windows": "alt+f4",
+      "linux": "alt+f4"
+    },
+    {
+      "name": "Close Editor",
+      "command": "workbench.action.closeActiveEditor",
+      "mac": "cmd+w",
+      "windows": "ctrl+f4",
+      "linux": "ctrl+w"
+    },
+    {
+      "name": "Close Folder",
+      "command": "workbench.action.closeFolder",
+      "mac": "cmd+k f",
+      "windows": "ctrl+k f",
+      "linux": "ctrl+k f"
+    },
+    {
+      "name": "Split Editor",
+      "command": "workbench.action.splitEditor",
+      "mac": "cmd+\\",
+      "windows": "ctrl+\\",
+      "linux": "ctrl+\\"
+    },
+    {
+      "name": "Focus into First Editor Group",
+      "command": "workbench.action.focusFirstEditorGroup",
+      "mac": "cmd+1",
+      "windows": "ctrl+1",
+      "linux": "ctrl+1"
+    },
+    {
+      "name": "Focus into Second Editor Group",
+      "command": "workbench.action.focusSecondEditorGroup",
+      "mac": "cmd+2",
+      "windows": "ctrl+2",
+      "linux": "ctrl+2"
+    },
+    {
+      "name": "Focus into Third Editor Group",
+      "command": "workbench.action.focusThirdEditorGroup",
+      "mac": "cmd+3",
+      "windows": "ctrl+3",
+      "linux": "ctrl+3"
+    },
+    {
+      "name": "Focus into Editor Group on the Left",
+      "command": "workbench.action.focusLeftGroup",
+      "mac": "cmd+k cmd+left",
+      "windows": "ctrl+k ctrl+left",
+      "linux": "ctrl+k ctrl+left"
+    },
+    {
+      "name": "Focus into Editor Group on the Right",
+      "command": "workbench.action.focusRightGroup",
+      "mac": "cmd+k cmd+right",
+      "windows": "ctrl+k ctrl+right",
+      "linux": "ctrl+k ctrl+right"
+    },
+    {
+      "name": "Move Editor Left",
+      "command": "workbench.action.moveEditorLeftInGroup",
+      "mac": "cmd+k shift+cmd+left",
+      "windows": "ctrl+shift+pageup",
+      "linux": "ctrl+shift+pageup"
+    },
+    {
+      "name": "Move Editor Right",
+      "command": "workbench.action.moveEditorRightInGroup",
+      "mac": "cmd+k shift+cmd+right",
+      "windows": "ctrl+shift+pagedown",
+      "linux": "ctrl+shift+pagedown"
+    },
+    {
+      "name": "Move Active Editor Group Left",
+      "command": "workbench.action.moveActiveEditorGroupLeft",
+      "mac": "cmd+k left",
+      "windows": "ctrl+k left",
+      "linux": "ctrl+k left"
+    },
+    {
+      "name": "Move Active Editor Group Right",
+      "command": "workbench.action.moveActiveEditorGroupRight",
+      "mac": "cmd+k right",
+      "windows": "ctrl+k right",
+      "linux": "ctrl+k right"
+    },
+    {
+      "name": "Move Editor into Next Group",
+      "command": "workbench.action.moveEditorToNextGroup",
+      "mac": "ctrl+cmd+right",
+      "windows": "ctrl+alt+right",
+      "linux": "ctrl+alt+right"
+    },
+    {
+      "name": "Move Editor into Previous Group",
+      "command": "workbench.action.moveEditorToPreviousGroup",
+      "mac": "ctrl+cmd+left",
+      "windows": "ctrl+alt+left",
+      "linux": "ctrl+alt+left"
+    },
+    {
+      "name": "New File",
+      "command": "workbench.action.files.newUntitledFile",
+      "mac": "cmd+n",
+      "windows": "ctrl+n",
+      "linux": "ctrl+n"
+    },
+    {
+      "name": "Open File...",
+      "command": "workbench.action.files.openFile",
+      "mac": "cmd+o",
+      "windows": "ctrl+o",
+      "linux": "ctrl+o"
+    },
+    {
+      "name": "Save",
+      "command": "workbench.action.files.save",
+      "mac": "cmd+s",
+      "windows": "ctrl+s",
+      "linux": "ctrl+s"
+    },
+    {
+      "name": "Save All",
+      "command": "saveAll",
+      "mac": "alt+cmd+s",
+      "windows": "ctrl+k s"
+    },
+    {
+      "name": "Save As...",
+      "command": "workbench.action.files.saveAs",
+      "mac": "shift+cmd+s",
+      "windows": "ctrl+shift+s",
+      "linux": "ctrl+shift+s"
+    },
+    {
+      "name": "Close",
+      "command": "workbench.action.closeActiveEditor",
+      "mac": "cmd+w",
+      "windows": "ctrl+f4",
+      "linux": "ctrl+w"
+    },
+    {
+      "name": "Close Group",
+      "command": "workbench.action.closeEditorsInGroup",
+      "mac": "cmd+k w",
+      "windows": "ctrl+k w",
+      "linux": "ctrl+k w"
+    },
+    {
+      "name": "Close All",
+      "command": "workbench.action.closeAllEditors",
+      "mac": "cmd+k cmd+w",
+      "windows": "ctrl+k ctrl+w",
+      "linux": "ctrl+k ctrl+w"
+    },
+    {
+      "name": "Reopen Closed Editor",
+      "command": "workbench.action.reopenClosedEditor",
+      "mac": "shift+cmd+t",
+      "windows": "ctrl+shift+t",
+      "linux": "ctrl+shift+t"
+    },
+    {
+      "name": "Keep Open",
+      "command": "workbench.action.keepEditor",
+      "mac": "cmd+k enter",
+      "windows": "ctrl+k enter",
+      "linux": "ctrl+k enter"
+    },
+    {
+      "name": "Copy Path of Active File",
+      "command": "workbench.action.files.copyPathOfActiveFile",
+      "mac": "cmd+k p",
+      "windows": "ctrl+k p",
+      "linux": "ctrl+k p"
+    },
+    {
+      "name": "Reveal Active File in Windows",
+      "command": "workbench.action.files.revealActiveFileInWindows",
+      "mac": "cmd+k r",
+      "windows": "ctrl+k r",
+      "linux": "ctrl+k r"
+    },
+    {
+      "name": "Toggle Full Screen",
+      "command": "workbench.action.toggleFullScreen",
+      "mac": "ctrl+cmd+f",
+      "windows": "f11",
+      "linux": "f11"
+    },
+    {
+      "name": "Toggle Zen Mode",
+      "command": "workbench.action.toggleZenMode",
+      "mac": "cmd+k z",
+      "windows": "ctrl+k z",
+      "linux": "ctrl+k z"
+    },
+    {
+      "name": "Leave Zen Mode",
+      "command": "workbench.action.exitZenMode",
+      "mac": "escape escape",
+      "windows": "escape escape",
+      "linux": "escape escape"
+    },
+    {
+      "name": "Zoom in",
+      "command": "workbench.action.zoomIn",
+      "mac": "cmd+=",
+      "windows": "ctrl+=",
+      "linux": "ctrl+="
+    },
+    {
+      "name": "Zoom out",
+      "command": "workbench.action.zoomOut",
+      "mac": "cmd+-",
+      "windows": "ctrl+-",
+      "linux": "ctrl+-"
+    },
+    {
+      "name": "Reset Zoom",
+      "command": "workbench.action.zoomReset",
+      "mac": "cmd+numpad0",
+      "windows": "ctrl+numpad0",
+      "linux": "ctrl+numpad0"
+    },
+    {
+      "name": "Toggle Sidebar Visibility",
+      "command": "workbench.action.toggleSidebarVisibility",
+      "mac": "cmd+b",
+      "windows": "ctrl+b",
+      "linux": "ctrl+b"
+    },
+    {
+      "name": "Show Explorer / Toggle Focus",
+      "command": "workbench.view.explorer",
+      "mac": "shift+cmd+e",
+      "windows": "ctrl+shift+e",
+      "linux": "ctrl+shift+e"
+    },
+    {
+      "name": "Show Search",
+      "command": "workbench.view.search",
+      "mac": "shift+cmd+f",
+      "windows": "ctrl+shift+f",
+      "linux": "ctrl+shift+f"
+    },
+    {
+      "name": "Show Source Control",
+      "command": "workbench.view.scm",
+      "mac": "ctrl+shift+g",
+      "windows": "ctrl+shift+g",
+      "linux": "ctrl+shift+g"
+    },
+    {
+      "name": "Show Run",
+      "command": "workbench.view.debug",
+      "mac": "shift+cmd+d",
+      "windows": "ctrl+shift+d",
+      "linux": "ctrl+shift+d"
+    },
+    {
+      "name": "Show Extensions",
+      "command": "workbench.view.extensions",
+      "mac": "shift+cmd+x",
+      "windows": "ctrl+shift+x",
+      "linux": "ctrl+shift+x"
+    },
+    {
+      "name": "Show Output",
+      "command": "workbench.action.output.toggleOutput",
+      "mac": "shift+cmd+u",
+      "windows": "ctrl+shift+u",
+      "linux": "ctrl+k ctrl+h"
+    },
+    {
+      "name": "Quick Open View",
+      "command": "workbench.action.quickOpenView",
+      "mac": "ctrl+q",
+      "windows": "ctrl+q"
+    },
+    {
+      "name": "Open New Command Prompt",
+      "command": "workbench.action.terminal.openNativeConsole",
+      "mac": "shift+cmd+c",
+      "windows": "ctrl+shift+c",
+      "linux": "ctrl+shift+c"
+    },
+    {
+      "name": "Toggle Markdown Preview",
+      "command": "markdown.togglePreview",
+      "mac": "shift+cmd+v",
+      "windows": "ctrl+shift+v",
+      "linux": "ctrl+shift+v"
+    },
+    {
+      "name": "Open Preview to the Side",
+      "command": "markdown.showPreviewToSide",
+      "mac": "cmd+k v",
+      "windows": "ctrl+k v",
+      "linux": "ctrl+k v"
+    },
+    {
+      "name": "Toggle Integrated Terminal",
+      "command": "workbench.action.terminal.toggleTerminal",
+      "mac": "ctrl+`",
+      "windows": "ctrl+`",
+      "linux": "ctrl+`"
+    },
+    {
+      "name": "Show Search",
+      "command": "workbench.view.search",
+      "mac": "shift+cmd+f",
+      "windows": "ctrl+shift+f",
+      "linux": "ctrl+shift+f"
+    },
+    {
+      "name": "Replace in Files",
+      "command": "workbench.action.replaceInFiles",
+      "mac": "shift+cmd+h",
+      "windows": "ctrl+shift+h",
+      "linux": "ctrl+shift+h"
+    },
+    {
+      "name": "Toggle Match Case",
+      "command": "toggleSearchCaseSensitive",
+      "mac": "alt+cmd+c",
+      "windows": "alt+c",
+      "linux": "alt+c"
+    },
+    {
+      "name": "Toggle Match Whole Word",
+      "command": "toggleSearchWholeWord",
+      "mac": "alt+cmd+w",
+      "windows": "alt+w",
+      "linux": "alt+w"
+    },
+    {
+      "name": "Toggle Use Regular Expression",
+      "command": "toggleSearchRegex",
+      "mac": "alt+cmd+r",
+      "windows": "alt+r",
+      "linux": "alt+r"
+    },
+    {
+      "name": "Toggle Search Details",
+      "command": "workbench.action.search.toggleQueryDetails",
+      "mac": "shift+cmd+j",
+      "windows": "ctrl+shift+j",
+      "linux": "ctrl+shift+j"
+    },
+    {
+      "name": "Focus Next Search Result",
+      "command": "search.action.focusNextSearchResult",
+      "mac": "f4",
+      "windows": "f4",
+      "linux": "f4"
+    },
+    {
+      "name": "Focus Previous Search Result",
+      "command": "search.action.focusPreviousSearchResult",
+      "mac": "shift+f4",
+      "windows": "shift+f4",
+      "linux": "shift+f4"
+    },
+    {
+      "name": "Show Next Search Term",
+      "command": "history.showNext",
+      "mac": "down",
+      "windows": "down",
+      "linux": "down"
+    },
+    {
+      "name": "Show Previous Search Term",
+      "command": "history.showPrevious",
+      "mac": "up",
+      "windows": "up",
+      "linux": "up"
+    },
+    {
+      "name": "Open Results In Editor",
+      "command": "search.action.openInEditor",
+      "mac": "cmd+enter",
+      "windows": "alt+enter",
+      "linux": "alt+enter"
+    },
+    {
+      "name": "Focus Search Editor Input",
+      "command": "search.action.focusQueryEditorWidget",
+      "mac": "escape",
+      "windows": "escape",
+      "linux": "escape"
+    },
+    {
+      "name": "Search Again",
+      "command": "rerunSearchEditorSearch",
+      "mac": "shift+cmd+r",
+      "windows": "ctrl+shift+r",
+      "linux": "ctrl+shift+r"
+    },
+    {
+      "name": "Delete File Results",
+      "command": "search.searchEditor.action.deleteFileResults",
+      "mac": "shift+cmd+backspace",
+      "windows": "ctrl+shift+backspace",
+      "linux": "ctrl+shift+backspace"
+    },
+    {
+      "name": "Open Settings",
+      "command": "workbench.action.openSettings",
+      "mac": "cmd+,",
+      "windows": "ctrl+,",
+      "linux": "ctrl+,"
+    },
+    {
+      "name": "Open Keyboard Shortcuts",
+      "command": "workbench.action.openGlobalKeybindings",
+      "mac": "cmd+k cmd+s",
+      "windows": "ctrl+k ctrl+s",
+      "linux": "ctrl+k ctrl+s"
+    },
+    {
+      "name": "Select Color Theme",
+      "command": "workbench.action.selectTheme",
+      "mac": "cmd+k cmd+t",
+      "windows": "ctrl+k ctrl+t",
+      "linux": "ctrl+k ctrl+t"
+    },
+    {
+      "name": "Open Chat view",
+      "command": "workbench.action.chat.open",
+      "mac": "ctrl+cmd+i",
+      "windows": "ctrl+alt+i",
+      "linux": "ctrl+alt+i"
+    },
+    {
+      "name": "Open chat in agent mode",
+      "command": "workbench.action.chat.openagent",
+      "mac": "shift+cmd+i",
+      "windows": "ctrl+shift+i",
+      "linux": "ctrl+shift+alt+i"
+    },
+    {
+      "name": "Open editor inline chat",
+      "command": "inlineChat.start",
+      "mac": "cmd+i",
+      "windows": "ctrl+i",
+      "linux": "ctrl+i"
+    },
+    {
+      "name": "Open terminal inline chat",
+      "command": "workbench.action.terminal.chat.start",
+      "mac": "cmd+i",
+      "windows": "ctrl+i",
+      "linux": "ctrl+i"
+    },
+    {
+      "name": "Open quick chat",
+      "command": "workbench.action.quickchat.toggle",
+      "mac": "shift+alt+cmd+l",
+      "windows": "ctrl+shift+alt+l",
+      "linux": "ctrl+shift+alt+l"
+    },
+    {
+      "name": "Open agent picker",
+      "command": "workbench.action.chat.openModePicker",
+      "mac": "cmd+.",
+      "windows": "ctrl+.",
+      "linux": "ctrl+."
+    },
+    {
+      "name": "Open language model picker",
+      "command": "workbench.action.chat.openModelPicker",
+      "mac": "alt+cmd+.",
+      "windows": "ctrl+alt+.",
+      "linux": "ctrl+alt+."
+    },
+    {
+      "name": "New chat session",
+      "command": "workbench.action.chat.newChat",
+      "mac": "cmd+n",
+      "windows": "ctrl+n",
+      "linux": "ctrl+n"
+    },
+    {
+      "name": "Accept inline suggestion",
+      "command": "editor.action.inlineSuggest.commit",
+      "mac": "tab",
+      "windows": "tab",
+      "linux": "tab"
+    },
+    {
+      "name": "Toggle Breakpoint",
+      "command": "editor.debug.action.toggleBreakpoint",
+      "mac": "f9",
+      "windows": "f9",
+      "linux": "f9"
+    },
+    {
+      "name": "Start",
+      "command": "workbench.action.debug.start",
+      "mac": "f5",
+      "windows": "f5",
+      "linux": "f5"
+    },
+    {
+      "name": "Continue",
+      "command": "workbench.action.debug.continue",
+      "mac": "f5",
+      "windows": "f5",
+      "linux": "f5"
+    },
+    {
+      "name": "Start (without debugging)",
+      "command": "workbench.action.debug.run",
+      "mac": "ctrl+f5",
+      "windows": "ctrl+f5",
+      "linux": "ctrl+f5"
+    },
+    {
+      "name": "Pause",
+      "command": "workbench.action.debug.pause",
+      "mac": "f6",
+      "windows": "f6",
+      "linux": "f6"
+    },
+    {
+      "name": "Step Into",
+      "command": "workbench.action.debug.stepInto",
+      "mac": "f11",
+      "windows": "f11",
+      "linux": "f11"
+    },
+    {
+      "name": "Run Build Task",
+      "command": "workbench.action.tasks.build",
+      "mac": "shift+cmd+b",
+      "windows": "ctrl+shift+b",
+      "linux": "ctrl+shift+b"
+    }
+  ]
+}

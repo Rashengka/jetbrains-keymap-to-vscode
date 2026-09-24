@@ -208,7 +208,8 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	layoutName := fs.String("layout", "auto", "keyboard layout for keys like Cmd+ě: auto (ask macOS), none, or "+strings.Join(layout.Names(), ", "))
 	var keepKeys, unkeepKeys listFlag
 	fs.Var(&keepKeys, "keep-key", "leave this key to VS Code, e.g. cmd+g or cmd+ě (repeatable; remembered in keybindings.json)")
-	fs.Var(&unkeepKeys, "unkeep-key", "stop leaving this key to VS Code (repeatable)")
+	fs.Var(&unkeepKeys, "unkeep-key", "stop leaving this key to VS Code (repeatable; \"recommended\" turns off --keep-recommended)")
+	keepRecommended := fs.Bool("keep-recommended", false, "leave VS Code's documented default shortcuts to VS Code (remembered like --keep-key)")
 	apply := fs.Bool("apply", false, "write keybindings.json (without it nothing is written)")
 	verbose := fs.Bool("v", false, "show the exact JSON block and every skipped shortcut")
 	if err := fs.Parse(args); err != nil {
@@ -315,12 +316,18 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	if err != nil {
 		return err
 	}
+	if *keepRecommended {
+		keepKeys = append(keepKeys, recommendedToken)
+	}
 	keep, keepNotes, err := keepList(vscode.ReadKeep(current), keepKeys, unkeepKeys, convert.Platform(*platform), lay)
 	if err != nil {
 		return err
 	}
-	var kept []convert.Binding
+	var kept, keptRecommended []convert.Binding
 	res.Bindings, kept = splitKept(res.Bindings, keep, convert.Platform(*platform), lay)
+	if containsString(keep, recommendedToken) {
+		res.Bindings, keptRecommended = splitRecommended(res.Bindings, convert.DefaultRecommended(convert.Platform(*platform)))
+	}
 	if vscodeInput {
 		res.Conflict = convert.FindConflicts(res.Bindings)
 	}
@@ -380,6 +387,11 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 		fmt.Fprintf(stdout, "\nLeft to VS Code (--keep-key): %s\n", strings.Join(keep, ", "))
 		for _, b := range kept {
 			fmt.Fprintf(stdout, "  %-24s not written: %s -> %s\n", b.Key, b.Action, b.Command)
+		}
+		recommended := convert.DefaultRecommended(convert.Platform(*platform))
+		for _, b := range keptRecommended {
+			r := recommended[convert.ComparableKey(b.Key)]
+			fmt.Fprintf(stdout, "  %-24s not written: %s -> %s  (VS Code default: %s)\n", b.Key, b.Action, b.Command, r.Name)
 		}
 	}
 	for _, n := range keepNotes {
@@ -477,6 +489,10 @@ func keepList(stored, add, remove []string, p convert.Platform, lay *layout.Layo
 		put(k)
 	}
 	for _, k := range add {
+		if k == recommendedToken {
+			put(k)
+			continue
+		}
 		n, err := convert.NormalizeUserKey(k, p, lay)
 		if err != nil {
 			return nil, nil, fmt.Errorf("--keep-key: %w", err)
@@ -487,6 +503,10 @@ func keepList(stored, add, remove []string, p convert.Platform, lay *layout.Layo
 		put(n)
 	}
 	for _, k := range remove {
+		if k == recommendedToken {
+			delete(set, k)
+			continue
+		}
 		n, err := convert.NormalizeUserKey(k, p, lay)
 		if err != nil {
 			return nil, nil, fmt.Errorf("--unkeep-key: %w", err)
@@ -503,6 +523,37 @@ func keepList(stored, add, remove []string, p convert.Platform, lay *layout.Layo
 		}
 	}
 	return out, notes, nil
+}
+
+// recommendedToken on the keep list stands for --keep-recommended.
+const recommendedToken = "recommended"
+
+func containsString(list []string, s string) bool {
+	for _, x := range list {
+		if x == s {
+			return true
+		}
+	}
+	return false
+}
+
+// splitRecommended removes bindings that would take a documented VS Code
+// default key for a different command. A chord whose first key is such a
+// default is removed too, because it would capture that key.
+func splitRecommended(bs []convert.Binding, rec map[string]convert.Recommended) (write, kept []convert.Binding) {
+	for _, b := range bs {
+		key := convert.ComparableKey(b.Key)
+		r, ok := rec[key]
+		if !ok {
+			r, ok = rec[strings.Fields(key)[0]]
+		}
+		if ok && r.Command != b.Command {
+			kept = append(kept, b)
+			continue
+		}
+		write = append(write, b)
+	}
+	return write, kept
 }
 
 // splitKept removes bindings on kept keys. A kept single key also removes

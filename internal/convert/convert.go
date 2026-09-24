@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -453,4 +454,68 @@ func NormalizeUserKey(s string, p Platform, lay *layout.Layout) (string, error) 
 		return "", fmt.Errorf("empty key")
 	}
 	return strings.Join(strokes, " "), nil
+}
+
+//go:embed vscode-defaults.json
+var vscodeDefaultsJSON []byte
+
+// Recommended is a VS Code default shortcut that --keep-recommended protects.
+type Recommended struct {
+	Name    string
+	Command string
+}
+
+// DefaultRecommended returns the default VS Code shortcuts listed in VS Code's
+// documentation, keyed by the comparable form of the key (see ComparableKey).
+func DefaultRecommended(p Platform) map[string]Recommended {
+	var doc struct {
+		Entries []struct {
+			Name    string `json:"name"`
+			Command string `json:"command"`
+			Mac     string `json:"mac"`
+			Windows string `json:"windows"`
+			Linux   string `json:"linux"`
+		} `json:"entries"`
+	}
+	if err := json.Unmarshal(vscodeDefaultsJSON, &doc); err != nil {
+		panic(err) // embedded data, covered by tests
+	}
+	out := map[string]Recommended{}
+	for _, e := range doc.Entries {
+		key := e.Linux
+		switch p {
+		case Mac:
+			key = e.Mac
+		case Windows:
+			key = e.Windows
+		}
+		if key == "" {
+			continue
+		}
+		if p == Windows {
+			key = strings.ReplaceAll(key, "cmd+", "win+")
+		} else if p == Linux {
+			key = strings.ReplaceAll(key, "cmd+", "meta+")
+		}
+		k := ComparableKey(key)
+		if _, dup := out[k]; !dup {
+			out[k] = Recommended{Name: e.Name, Command: e.Command}
+		}
+	}
+	return out
+}
+
+var scanLetterDigit = regexp.MustCompile(`\[(?:Key([A-Z])|Digit([0-9]))\]`)
+
+// ComparableKey maps physical letter and digit keys to their names, so that
+// "cmd+[Digit2]" (Cmd plus the key in the 2 position, ě on a Czech keyboard)
+// compares equal to VS Code's default "cmd+2", which VS Code binds by position.
+func ComparableKey(key string) string {
+	return scanLetterDigit.ReplaceAllStringFunc(key, func(m string) string {
+		s := scanLetterDigit.FindStringSubmatch(m)
+		if s[1] != "" {
+			return strings.ToLower(s[1])
+		}
+		return s[2]
+	})
 }
