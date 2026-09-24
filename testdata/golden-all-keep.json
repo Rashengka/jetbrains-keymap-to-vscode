@@ -15,6 +15,17 @@
     "command": "editor.action.commentLine",
     "when": "editorTextFocus && !editorReadonly"
   },
+  // Find (meta f)
+  {
+    "key": "cmd+f",
+    "command": "actions.find",
+    "when": "editorFocus || editorIsOpen"
+  },
+  // FindInPath (control f)
+  {
+    "key": "ctrl+f",
+    "command": "workbench.action.findInFiles"
+  },
   // ReformatCode (alt meta l)
   {
     "key": "alt+cmd+l",

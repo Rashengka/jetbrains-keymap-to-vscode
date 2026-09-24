@@ -8,10 +8,26 @@
     "command": "editor.action.copyLinesDownAction",
     "when": "editorTextFocus && !editorReadonly"
   },
+  // FindInPath (meta f)
+  {
+    "key": "cmd+f",
+    "command": "workbench.action.findInFiles"
+  },
+  // FindInPath (control f)
+  {
+    "key": "ctrl+f",
+    "command": "workbench.action.findInFiles"
+  },
   // GotoFile (meta #100011b)
   {
     "key": "cmd+[Digit2]",
     "command": "workbench.action.quickOpen"
+  },
+  // Find (meta f, inherited: shares the key)
+  {
+    "key": "cmd+f",
+    "command": "actions.find",
+    "when": "editorFocus || editorIsOpen"
   }
   // <<< jetbrains-keymap-to-vscode
 ]

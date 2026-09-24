@@ -255,6 +255,9 @@ type Binding struct {
 	Args     json.RawMessage `json:"args,omitempty"`
 	Action   string          `json:"-"`
 	Shortcut keymap.Shortcut `json:"-"`
+	// Inherited is set for an unchanged JetBrains action written only because
+	// it shares a key with one the user changed (custom scope).
+	Inherited bool `json:"-"`
 }
 
 // Skipped is a shortcut that was not converted. Reason is set when the
@@ -288,7 +291,20 @@ type Conflict struct {
 func Convert(sel keymap.Selection, t Table, p Platform, lay *layout.Layout) Result {
 	var r Result
 	reviewed := DefaultReviewed()
+	var inherited []Binding
 	for _, e := range sel.Entries {
+		if e.Inherited {
+			// Only the part that narrows the user's key to a context is
+			// needed; a global inherited rule would compete with the user's.
+			for _, m := range withWhen(t[e.Action]) {
+				for _, s := range e.Shortcuts.Keys {
+					if key, err := Chord(s, p, lay); err == nil {
+						inherited = append(inherited, Binding{Key: key, Command: m.Command, When: m.When, Args: m.Args, Action: e.Action, Shortcut: s, Inherited: true})
+					}
+				}
+			}
+			continue
+		}
 		for _, m := range e.Shortcuts.Mouse {
 			r.Mouse = append(r.Mouse, Skipped{e.Action, m, ""})
 		}
@@ -315,8 +331,59 @@ func Convert(sel keymap.Selection, t Table, p Platform, lay *layout.Layout) Resu
 			}
 		}
 	}
+	// An inherited rule is added only where the user's own rule on the key is
+	// global: there JetBrains still runs the context action in its context.
+	// Where the user's rules have when clauses of their own, which one JetBrains
+	// runs depends on registration order the tool does not know, so the user's
+	// rules are left alone.
+	global := map[string]bool{}
+	for _, b := range r.Bindings {
+		if b.When == "" {
+			global[b.Key] = true
+		}
+	}
+	for _, b := range inherited {
+		if global[b.Key] {
+			r.Bindings = append(r.Bindings, b)
+		}
+	}
+	r.Bindings = globalFirst(r.Bindings)
 	r.Conflict = FindConflicts(r.Bindings)
 	return r
+}
+
+func withWhen(maps []Mapping) []Mapping {
+	var out []Mapping
+	for _, m := range maps {
+		if m.When != "" {
+			out = append(out, m)
+		}
+	}
+	return out
+}
+
+// globalFirst moves each rule without a when clause in front of the rules with
+// one on the same key. VS Code runs the last matching rule, so the narrower
+// context then wins where it applies and the global rule everywhere else —
+// what JetBrains does when an editor action and a global one share a key.
+// Other rules keep their order.
+func globalFirst(bs []Binding) []Binding {
+	out := make([]Binding, 0, len(bs))
+	for _, b := range bs {
+		at := len(out)
+		if b.When == "" {
+			for i, o := range out {
+				if o.Key == b.Key && o.When != "" {
+					at = i
+					break
+				}
+			}
+		}
+		out = append(out, Binding{})
+		copy(out[at+1:], out[at:])
+		out[at] = b
+	}
+	return out
 }
 
 // plainKey reports whether every keystroke of a VS Code key lacks Ctrl, Alt,

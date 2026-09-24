@@ -2,6 +2,7 @@ package convert
 
 import (
 	"encoding/json"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -243,5 +244,56 @@ func TestComparableKeyAndRecommended(t *testing.T) {
 	}
 	if len(mac) < 100 {
 		t.Errorf("too few defaults: %d", len(mac))
+	}
+}
+
+// VS Code runs the last matching rule, so on one key the global rule must come
+// before rules with a when clause: cmd+f then finds in the editor and in files
+// elsewhere, as in JetBrains. An inherited action is only written when it has a
+// when clause; an inherited global one would compete with the user's own.
+func TestGlobalRuleGoesBeforeContextRuleOnSameKey(t *testing.T) {
+	f := keymap.Shortcuts{Keys: []keymap.Shortcut{{First: "meta f"}}}
+	sel := keymap.Selection{Entries: []keymap.Entry{
+		{Action: "Find", Shortcuts: f, Inherited: true},
+		{Action: "FindInPath", Shortcuts: f},
+		{Action: "FindSelectionInPath", Shortcuts: f, Inherited: true},
+		{Action: "TerminalFind", Shortcuts: f, Inherited: true},
+	}}
+	tab := Table{
+		"Find":                {{Action: "Find", Command: "actions.find", When: "editorFocus"}},
+		"FindInPath":          {{Action: "FindInPath", Command: "workbench.action.findInFiles"}},
+		"FindSelectionInPath": {{Action: "FindSelectionInPath", Command: "workbench.action.findInFiles"}},
+		"TerminalFind":        {{Action: "TerminalFind", Command: "workbench.action.terminal.focusFind", When: "terminalFocus"}},
+	}
+	r := Convert(sel, tab, Mac, nil)
+	var got []string
+	for _, b := range r.Bindings {
+		got = append(got, b.Action)
+	}
+	want := []string{"FindInPath", "Find", "TerminalFind"}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("order: got %v, want %v", got, want)
+	}
+	if !r.Bindings[1].Inherited || r.Bindings[0].Inherited {
+		t.Errorf("inherited flag: %+v", r.Bindings)
+	}
+}
+
+// Where the user's own rule on a key has a when clause, JetBrains picks between
+// it and an inherited context action by registration order, which the tool
+// does not know; the inherited one must not be added and win by position.
+func TestInheritedRuleNotAddedNextToUserContextRule(t *testing.T) {
+	u := keymap.Shortcuts{Keys: []keymap.Shortcut{{First: "meta u"}}}
+	sel := keymap.Selection{Entries: []keymap.Entry{
+		{Action: "FindUsages", Shortcuts: u},
+		{Action: "InsertImage", Shortcuts: u, Inherited: true},
+	}}
+	tab := Table{
+		"FindUsages":  {{Action: "FindUsages", Command: "references-view.findReferences", When: "editorHasReferenceProvider"}},
+		"InsertImage": {{Action: "InsertImage", Command: "markdown.insertImage", When: "editorLangId == 'markdown'"}},
+	}
+	r := Convert(sel, tab, Mac, nil)
+	if len(r.Bindings) != 1 || r.Bindings[0].Action != "FindUsages" {
+		t.Errorf("only the user's rule is written: %+v", r.Bindings)
 	}
 }

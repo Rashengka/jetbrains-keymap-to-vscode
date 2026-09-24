@@ -17,6 +17,7 @@ const fxDefault = `<keymap version="1" name="$default">
   <action id="ReformatCode"><keyboard-shortcut first-keystroke="control alt L"/></action>
   <action id="GotoDeclaration"><keyboard-shortcut first-keystroke="control B"/><mouse-shortcut keystroke="control button1"/></action>
   <action id="FindInPath"><keyboard-shortcut first-keystroke="control shift F"/></action>
+  <action id="Find"><keyboard-shortcut first-keystroke="control F"/></action>
   <action id="HideActiveWindow"><keyboard-shortcut first-keystroke="shift ESCAPE"/></action>
   <action id="Console.Jdbc.Execute"><keyboard-shortcut first-keystroke="control ENTER"/></action>
   <action id="SomethingUnreviewed"><keyboard-shortcut first-keystroke="control shift U"/></action>
@@ -30,6 +31,7 @@ const fxMac = `<keymap version="1" name="Mac OS X 10.5+" parent="$default">
 const fxUser = `<keymap version="1" name="Custom" parent="Mac OS X 10.5+">
   <action id="EditorDuplicate"><keyboard-shortcut first-keystroke="shift meta D"/></action>
   <action id="GotoFile"><keyboard-shortcut first-keystroke="meta #100011b"/></action>
+  <action id="FindInPath"><keyboard-shortcut first-keystroke="meta F"/><keyboard-shortcut first-keystroke="control F"/></action>
 </keymap>`
 
 const fxUserKeybindings = `// my file

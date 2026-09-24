@@ -2,6 +2,7 @@ package keymap
 
 import (
 	"archive/zip"
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -259,5 +260,36 @@ func writeJar(t *testing.T, path string, files map[string]string) {
 	}
 	if err := w.Close(); err != nil {
 		t.Fatal(err)
+	}
+}
+
+// A key the user gave to one action can still carry an inherited action, like
+// Find (editor) and FindInPath (everywhere) on cmd+f. The IDE runs the first
+// enabled one, so custom scope must see the inherited action too.
+func TestSelectCustomAddsInheritedActionOnSharedKey(t *testing.T) {
+	s := NewSet()
+	s.AddKeymap(mustParse(t, `<keymap version="1" name="$default">
+  <action id="Find"><keyboard-shortcut first-keystroke="control F"/><keyboard-shortcut first-keystroke="alt F3"/></action>
+  <action id="FindInPath"><keyboard-shortcut first-keystroke="control shift F"/></action>
+  <action id="Other"><keyboard-shortcut first-keystroke="control O"/></action>
+</keymap>`))
+	s.AddKeymap(mustParse(t, `<keymap name="Mac OS X 10.5+" parent="$default" version="1"/>`))
+	u := mustParse(t, `<keymap version="1" name="Mine" parent="Mac OS X 10.5+">
+  <action id="FindInPath"><keyboard-shortcut first-keystroke="meta F"/></action>
+</keymap>`)
+	u.User = true
+	s.AddKeymap(u)
+
+	sel, err := s.Select("Mine", ScopeCustom)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got []string
+	for _, e := range sel.Entries {
+		got = append(got, fmt.Sprintf("%s %v %v", e.Action, e.Inherited, e.Shortcuts.Keys))
+	}
+	want := []string{"Find true [meta f]", "FindInPath false [meta f]"}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("entries:\n got %q\nwant %q", got, want)
 	}
 }

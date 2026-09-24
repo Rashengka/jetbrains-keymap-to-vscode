@@ -32,6 +32,9 @@ type Entry struct {
 	Shortcuts Shortcuts
 	// Removed lists default shortcuts the user removed from this action (custom scope only).
 	Removed []Shortcut
+	// Inherited marks an unchanged action added in custom scope because it
+	// shares a key with a changed one; Shortcuts holds only the shared keys.
+	Inherited bool
 }
 
 // Selection is the result of applying a scope to a keymap.
@@ -85,6 +88,7 @@ func (s *Set) Select(active string, scope Scope) (Selection, error) {
 			}
 			sel.Entries = append(sel.Entries, e)
 		}
+		sel.Entries = append(sel.Entries, s.inheritedOnSharedKeys(active, changed, sel.Entries)...)
 	case ScopeAll, ScopeDefault:
 		from := active
 		if scope == ScopeDefault {
@@ -105,6 +109,40 @@ func (s *Set) Select(active string, scope Scope) (Selection, error) {
 	}
 	sort.Slice(sel.Entries, func(i, j int) bool { return sel.Entries[i].Action < sel.Entries[j].Action })
 	return sel, nil
+}
+
+// inheritedOnSharedKeys finds unchanged actions of the active keymap that
+// share a key with the user's changed ones. On such a key the IDE runs the
+// first enabled action in registration order, so an editor action like Find
+// keeps working in the editor even when the user put FindInPath on its key.
+// Only the shared keys are returned.
+func (s *Set) inheritedOnSharedKeys(active string, changed map[string]bool, own []Entry) []Entry {
+	keys := map[Shortcut]bool{}
+	for _, e := range own {
+		for _, k := range e.Shortcuts.Keys {
+			keys[k] = true
+		}
+	}
+	if len(keys) == 0 {
+		return nil
+	}
+	var out []Entry
+	for _, id := range s.AllActions(active) {
+		if changed[id] {
+			continue
+		}
+		sc, _ := s.Effective(active, id)
+		var shared []Shortcut
+		for _, k := range sc.Keys {
+			if keys[k] {
+				shared = append(shared, k)
+			}
+		}
+		if len(shared) > 0 {
+			out = append(out, Entry{Action: id, Shortcuts: Shortcuts{Keys: shared}, Inherited: true})
+		}
+	}
+	return out
 }
 
 func containsShortcut(list []Shortcut, x Shortcut) bool {

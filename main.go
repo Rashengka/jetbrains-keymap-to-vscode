@@ -363,6 +363,9 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 		e := vscode.Entry{Key: b.Key, Command: b.Command, When: b.When, Args: b.Args}
 		if b.Action != "" {
 			e.Comment = fmt.Sprintf("%s (%s)", b.Action, b.Shortcut)
+			if b.Inherited {
+				e.Comment = fmt.Sprintf("%s (%s, inherited: shares the key)", b.Action, b.Shortcut)
+			}
 		}
 		entries = append(entries, e)
 	}
@@ -674,7 +677,13 @@ func report(r convert.Result, sel keymap.Selection, outside []vscode.RawBinding,
 	for _, x := range r.Bindings {
 		actions[x.Action] = true
 	}
-	fmt.Fprintf(&b, "\nConverted: %d keybindings for %d actions (of %d actions in scope).\n", len(r.Bindings), len(actions), len(sel.Entries))
+	inScope := 0
+	for _, e := range sel.Entries {
+		if !e.Inherited {
+			inScope++
+		}
+	}
+	fmt.Fprintf(&b, "\nConverted: %d keybindings for %d actions (of %d actions in scope).\n", len(r.Bindings), len(actions), inScope)
 	section := func(title string, items []convert.Skipped) {
 		if len(items) == 0 {
 			return
@@ -722,6 +731,15 @@ func report(r convert.Result, sel keymap.Selection, outside []vscode.RawBinding,
 				fmt.Fprintf(&b, "      %s -> %s\n", x.Action, x.Command)
 			}
 		}
+	}
+	var inherited []string
+	for _, x := range r.Bindings {
+		if x.Inherited {
+			inherited = append(inherited, fmt.Sprintf("  %-20s %s -> %s  when %s", x.Key, x.Action, x.Command, x.When))
+		}
+	}
+	if len(inherited) > 0 {
+		fmt.Fprintf(&b, "\nAdded from the inherited keymap: they share a key with your changes and win in their context, as in JetBrains (%d):\n%s\n", len(inherited), strings.Join(inherited, "\n"))
 	}
 	var overlaps []string
 	for _, o := range outside {

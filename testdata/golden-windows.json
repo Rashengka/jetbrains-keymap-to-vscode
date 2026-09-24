@@ -20,9 +20,20 @@
     "command": "editor.action.copyLinesDownAction",
     "when": "editorTextFocus && !editorReadonly"
   },
-  // FindInPath (shift meta f)
+  // FindInPath (meta f)
   {
-    "key": "shift+win+f",
+    "key": "win+f",
+    "command": "workbench.action.findInFiles"
+  },
+  // Find (meta f)
+  {
+    "key": "win+f",
+    "command": "actions.find",
+    "when": "editorFocus || editorIsOpen"
+  },
+  // FindInPath (control f)
+  {
+    "key": "ctrl+f",
     "command": "workbench.action.findInFiles"
   },
   // GotoClass (meta o)

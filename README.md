@@ -155,6 +155,29 @@ The report lists all of these:
 Conflicts (one key bound to several commands in the same context) and keys you
 already use in your own keybindings are reported too.
 
+### One key, several JetBrains actions
+
+A JetBrains keymap can bind one key to several actions. The IDE runs the first
+one that is enabled, in the order the actions are registered. With `Find`
+(enabled only in an editor) and `FindInPath` (enabled everywhere) on `cmd+f`,
+that means: search in the file in an editor, search in files elsewhere.
+
+VS Code runs the last matching rule instead. So on each key the tool writes the
+rules without a `when` clause first and the rules with one after them: the
+narrower context wins where it applies and the global rule everywhere else.
+
+With `--scope custom`, only your own changes are transferred. If you gave a key
+to an action that works everywhere and the key still carries an inherited
+action limited to a context (like `Find` above), that inherited action is
+written too, marked `inherited: shares the key` in the block and listed in the
+report. It is not added next to your own rules that have a `when` clause of
+their own: which of those the IDE runs depends on the registration order, which
+the tool does not read.
+
+The tool assumes the narrower action is registered first, as it is for the
+bundled editor actions. If a global action is registered first, the IDE always
+runs it, and VS Code will run the narrower one in its context instead.
+
 ## Platforms
 
 Binaries: macOS (arm64, amd64), Linux (amd64), Windows (amd64).
