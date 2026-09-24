@@ -1,0 +1,789 @@
+[
+  {
+    "action": "$Copy",
+    "command": "editor.action.clipboardCopyAction"
+  },
+  {
+    "action": "$Cut",
+    "command": "editor.action.clipboardCutAction"
+  },
+  {
+    "action": "$Paste",
+    "command": "editor.action.clipboardPasteAction"
+  },
+  {
+    "action": "$Undo",
+    "command": "undo"
+  },
+  {
+    "action": "$Redo",
+    "command": "redo"
+  },
+  {
+    "action": "$SelectAll",
+    "command": "editor.action.selectAll"
+  },
+  {
+    "action": "CodeCompletion",
+    "command": "editor.action.triggerSuggest",
+    "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorChooseLookupItem",
+    "command": "acceptSelectedSuggestion",
+    "when": "suggestWidgetVisible && textInputFocus"
+  },
+  {
+    "action": "EditorChooseLookupItemReplace",
+    "command": "acceptAlternativeSelectedSuggestion",
+    "when": "suggestWidgetVisible && textInputFocus"
+  },
+  {
+    "action": "ParameterInfo",
+    "command": "editor.action.triggerParameterHints",
+    "when": "editorHasSignatureHelpProvider && editorTextFocus"
+  },
+  {
+    "action": "QuickJavaDoc",
+    "command": "editor.action.showHover",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "ShowErrorDescription",
+    "command": "editor.action.showHover",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "QuickImplementations",
+    "command": "editor.action.peekImplementation",
+    "when": "editorHasImplementationProvider && editorTextFocus"
+  },
+  {
+    "action": "QuickDefinition",
+    "command": "editor.action.peekDefinition",
+    "when": "editorHasDefinitionProvider && editorTextFocus"
+  },
+  {
+    "action": "ShowIntentionActions",
+    "command": "editor.action.quickFix",
+    "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+  },
+  {
+    "action": "Generate",
+    "command": "editor.action.sourceAction",
+    "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+  },
+  {
+    "action": "InsertLiveTemplate",
+    "command": "editor.action.insertSnippet",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "SurroundWith",
+    "command": "editor.action.surroundWithSnippet",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "CommentByLineComment",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "CommentByBlockComment",
+    "command": "editor.action.blockComment",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "ReformatCode",
+    "command": "editor.action.formatSelection",
+    "when": "editorHasDocumentSelectionFormattingProvider && editorHasSelection && editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "ReformatCode",
+    "command": "editor.action.formatDocument",
+    "when": "editorHasDocumentFormattingProvider && !editorHasSelection && editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "AutoIndentLines",
+    "command": "editor.action.reindentselectedlines",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "OptimizeImports",
+    "command": "editor.action.organizeImports",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorDuplicate",
+    "command": "editor.action.copyLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorDeleteLine",
+    "command": "editor.action.deleteLines",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorJoinLines",
+    "command": "editor.action.joinLines",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "MoveLineUp",
+    "command": "editor.action.moveLinesUpAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "MoveLineDown",
+    "command": "editor.action.moveLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "MoveStatementUp",
+    "command": "editor.action.moveLinesUpAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "MoveStatementDown",
+    "command": "editor.action.moveLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorStartNewLine",
+    "command": "editor.action.insertLineAfter",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorStartNewLineBefore",
+    "command": "editor.action.insertLineBefore",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorSplitLine",
+    "command": "lineBreakInsert",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorDeleteToWordStart",
+    "command": "deleteWordLeft",
+    "when": "textInputFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorDeleteToWordEnd",
+    "command": "deleteWordRight",
+    "when": "textInputFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorDeleteToLineStart",
+    "command": "deleteAllLeft",
+    "when": "textInputFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorDeleteToLineEnd",
+    "command": "deleteAllRight",
+    "when": "textInputFocus && !editorReadonly"
+  },
+  {
+    "action": "EditorSelectWord",
+    "command": "editor.action.smartSelect.expand",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EditorUnSelectWord",
+    "command": "editor.action.smartSelect.shrink",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EditorSelectLine",
+    "command": "expandLineSelection",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "SelectNextOccurrence",
+    "command": "editor.action.addSelectionToNextFindMatch",
+    "when": "editorFocus"
+  },
+  {
+    "action": "UnselectPreviousOccurrence",
+    "command": "cursorUndo",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "SelectAllOccurrences",
+    "command": "editor.action.selectHighlights",
+    "when": "editorFocus"
+  },
+  {
+    "action": "EditorCloneCaretAbove",
+    "command": "editor.action.insertCursorAbove",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EditorCloneCaretBelow",
+    "command": "editor.action.insertCursorBelow",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EditorToggleColumnMode",
+    "command": "editor.action.toggleColumnSelection"
+  },
+  {
+    "action": "EditorLineStart",
+    "command": "cursorHome",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorLineStartWithSelection",
+    "command": "cursorHomeSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorLineEnd",
+    "command": "cursorEnd",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorLineEndWithSelection",
+    "command": "cursorEndSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorPreviousWord",
+    "command": "cursorWordLeft",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorPreviousWordWithSelection",
+    "command": "cursorWordLeftSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorNextWord",
+    "command": "cursorWordRight",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorNextWordWithSelection",
+    "command": "cursorWordRightSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorTextStart",
+    "command": "cursorTop",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorTextStartWithSelection",
+    "command": "cursorTopSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorTextEnd",
+    "command": "cursorBottom",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorTextEndWithSelection",
+    "command": "cursorBottomSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorPageUp",
+    "command": "cursorPageUp",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorPageUpWithSelection",
+    "command": "cursorPageUpSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorPageDown",
+    "command": "cursorPageDown",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorPageDownWithSelection",
+    "command": "cursorPageDownSelect",
+    "when": "textInputFocus"
+  },
+  {
+    "action": "EditorScrollUp",
+    "command": "scrollLineUp",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EditorScrollDown",
+    "command": "scrollLineDown",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "EditorMatchBrace",
+    "command": "editor.action.jumpToBracket",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "CollapseRegion",
+    "command": "editor.fold",
+    "when": "editorTextFocus && foldingEnabled"
+  },
+  {
+    "action": "ExpandRegion",
+    "command": "editor.unfold",
+    "when": "editorTextFocus && foldingEnabled"
+  },
+  {
+    "action": "CollapseRegionRecursively",
+    "command": "editor.foldRecursively",
+    "when": "editorTextFocus && foldingEnabled"
+  },
+  {
+    "action": "ExpandRegionRecursively",
+    "command": "editor.unfoldRecursively",
+    "when": "editorTextFocus && foldingEnabled"
+  },
+  {
+    "action": "CollapseAllRegions",
+    "command": "editor.foldAll",
+    "when": "editorTextFocus && foldingEnabled"
+  },
+  {
+    "action": "ExpandAllRegions",
+    "command": "editor.unfoldAll",
+    "when": "editorTextFocus && foldingEnabled"
+  },
+  {
+    "action": "Find",
+    "command": "actions.find",
+    "when": "editorFocus || editorIsOpen"
+  },
+  {
+    "action": "Replace",
+    "command": "editor.action.startFindReplaceAction",
+    "when": "editorFocus || editorIsOpen"
+  },
+  {
+    "action": "FindNext",
+    "command": "editor.action.nextMatchFindAction",
+    "when": "editorFocus"
+  },
+  {
+    "action": "FindPrevious",
+    "command": "editor.action.previousMatchFindAction",
+    "when": "editorFocus"
+  },
+  {
+    "action": "FindWordAtCaret",
+    "command": "editor.action.nextSelectionMatchFindAction",
+    "when": "editorFocus"
+  },
+  {
+    "action": "FindInPath",
+    "command": "workbench.action.findInFiles"
+  },
+  {
+    "action": "ReplaceInPath",
+    "command": "workbench.action.replaceInFiles"
+  },
+  {
+    "action": "GotoDeclaration",
+    "command": "editor.action.revealDefinition",
+    "when": "editorHasDefinitionProvider && editorTextFocus"
+  },
+  {
+    "action": "GotoImplementation",
+    "command": "editor.action.goToImplementation",
+    "when": "editorHasImplementationProvider && editorTextFocus"
+  },
+  {
+    "action": "GotoTypeDeclaration",
+    "command": "editor.action.goToTypeDefinition",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "ShowUsages",
+    "command": "editor.action.goToReferences",
+    "when": "editorHasReferenceProvider && editorTextFocus"
+  },
+  {
+    "action": "FindUsages",
+    "command": "references-view.findReferences",
+    "when": "editorHasReferenceProvider"
+  },
+  {
+    "action": "CallHierarchy",
+    "command": "references-view.showCallHierarchy",
+    "when": "editorHasCallHierarchyProvider"
+  },
+  {
+    "action": "TypeHierarchy",
+    "command": "references-view.showTypeHierarchy",
+    "when": "editorHasTypeHierarchyProvider"
+  },
+  {
+    "action": "GotoFile",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "action": "GotoClass",
+    "command": "workbench.action.showAllSymbols"
+  },
+  {
+    "action": "GotoSymbol",
+    "command": "workbench.action.showAllSymbols"
+  },
+  {
+    "action": "GotoAction",
+    "command": "workbench.action.showCommands"
+  },
+  {
+    "action": "SearchEverywhere",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "action": "FileStructurePopup",
+    "command": "workbench.action.gotoSymbol"
+  },
+  {
+    "action": "GotoLine",
+    "command": "workbench.action.gotoLine"
+  },
+  {
+    "action": "RecentFiles",
+    "command": "workbench.action.showAllEditorsByMostRecentlyUsed"
+  },
+  {
+    "action": "Back",
+    "command": "workbench.action.navigateBack"
+  },
+  {
+    "action": "Forward",
+    "command": "workbench.action.navigateForward"
+  },
+  {
+    "action": "JumpToLastChange",
+    "command": "workbench.action.navigateToLastEditLocation"
+  },
+  {
+    "action": "GotoNextError",
+    "command": "editor.action.marker.next",
+    "when": "editorFocus"
+  },
+  {
+    "action": "GotoPreviousError",
+    "command": "editor.action.marker.prev",
+    "when": "editorFocus"
+  },
+  {
+    "action": "ShowNavBar",
+    "command": "breadcrumbs.focusAndSelect",
+    "when": "breadcrumbsPossible && breadcrumbsVisible"
+  },
+  {
+    "action": "SelectInProjectView",
+    "command": "workbench.files.action.showActiveFileInExplorer"
+  },
+  {
+    "action": "NextTab",
+    "command": "workbench.action.nextEditor"
+  },
+  {
+    "action": "PreviousTab",
+    "command": "workbench.action.previousEditor"
+  },
+  {
+    "action": "NextEditorTab",
+    "command": "workbench.action.nextEditor"
+  },
+  {
+    "action": "PreviousEditorTab",
+    "command": "workbench.action.previousEditor"
+  },
+  {
+    "action": "CloseContent",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "action": "CloseActiveTab",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "action": "CloseAllEditors",
+    "command": "workbench.action.closeAllEditors"
+  },
+  {
+    "action": "CloseAllEditorsButActive",
+    "command": "workbench.action.closeOtherEditors"
+  },
+  {
+    "action": "ReopenClosedTab",
+    "command": "workbench.action.reopenClosedEditor"
+  },
+  {
+    "action": "SplitVertically",
+    "command": "workbench.action.splitEditorRight"
+  },
+  {
+    "action": "SplitHorizontally",
+    "command": "workbench.action.splitEditorDown"
+  },
+  {
+    "action": "NextSplitter",
+    "command": "workbench.action.focusNextGroup"
+  },
+  {
+    "action": "PrevSplitter",
+    "command": "workbench.action.focusPreviousGroup"
+  },
+  {
+    "action": "ActivateProjectToolWindow",
+    "command": "workbench.view.explorer"
+  },
+  {
+    "action": "ActivateFindToolWindow",
+    "command": "workbench.view.search"
+  },
+  {
+    "action": "ActivateDebugToolWindow",
+    "command": "workbench.view.debug"
+  },
+  {
+    "action": "ActivateRunToolWindow",
+    "command": "workbench.action.output.toggleOutput"
+  },
+  {
+    "action": "ActivateTerminalToolWindow",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "action": "ActivateVersionControlToolWindow",
+    "command": "workbench.view.scm"
+  },
+  {
+    "action": "ActivateCommitToolWindow",
+    "command": "workbench.view.scm"
+  },
+  {
+    "action": "ActivateProblemsViewToolWindow",
+    "command": "workbench.actions.view.problems"
+  },
+  {
+    "action": "ActivateStructureToolWindow",
+    "command": "outline.focus"
+  },
+  {
+    "action": "HideActiveWindow",
+    "command": "workbench.action.closePanel"
+  },
+  {
+    "action": "HideAllWindows",
+    "command": "workbench.action.toggleMaximizeEditorGroup"
+  },
+  {
+    "action": "SaveAll",
+    "command": "workbench.action.files.saveAll"
+  },
+  {
+    "action": "Synchronize",
+    "command": "workbench.files.action.refreshFilesExplorer"
+  },
+  {
+    "action": "NewScratchFile",
+    "command": "workbench.action.files.newUntitledFile"
+  },
+  {
+    "action": "NewElement",
+    "command": "explorer.newFile",
+    "when": "explorerViewletFocus"
+  },
+  {
+    "action": "CopyPaths",
+    "command": "copyFilePath"
+  },
+  {
+    "action": "CopyReference",
+    "command": "copyRelativeFilePath"
+  },
+  {
+    "action": "OpenFile",
+    "command": "workbench.action.files.openFile"
+  },
+  {
+    "action": "ShowSettings",
+    "command": "workbench.action.openSettings"
+  },
+  {
+    "action": "ToggleFullScreen",
+    "command": "workbench.action.toggleFullScreen"
+  },
+  {
+    "action": "ToggleDistractionFreeMode",
+    "command": "workbench.action.toggleZenMode"
+  },
+  {
+    "action": "QuickChangeScheme",
+    "command": "workbench.action.selectTheme"
+  },
+  {
+    "action": "RenameElement",
+    "command": "editor.action.rename",
+    "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+  },
+  {
+    "action": "Refactorings.QuickListPopupAction",
+    "command": "editor.action.refactor",
+    "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+  },
+  {
+    "action": "ExtractMethod",
+    "command": "editor.action.codeAction",
+    "when": "editorTextFocus && !editorReadonly",
+    "args": {
+      "kind": "refactor.extract.function"
+    }
+  },
+  {
+    "action": "IntroduceConstant",
+    "command": "editor.action.codeAction",
+    "when": "editorTextFocus && !editorReadonly",
+    "args": {
+      "kind": "refactor.extract.constant"
+    }
+  },
+  {
+    "action": "IntroduceVariable",
+    "command": "editor.action.codeAction",
+    "when": "editorTextFocus && !editorReadonly",
+    "args": {
+      "kind": "refactor.extract"
+    }
+  },
+  {
+    "action": "Inline",
+    "command": "editor.action.codeAction",
+    "when": "editorTextFocus && !editorReadonly",
+    "args": {
+      "kind": "refactor.inline"
+    }
+  },
+  {
+    "action": "Move",
+    "command": "editor.action.codeAction",
+    "when": "editorTextFocus && !editorReadonly",
+    "args": {
+      "kind": "refactor.move"
+    }
+  },
+  {
+    "action": "Run",
+    "command": "workbench.action.debug.run",
+    "when": "!inDebugMode"
+  },
+  {
+    "action": "Debug",
+    "command": "workbench.action.debug.start",
+    "when": "!inDebugMode"
+  },
+  {
+    "action": "ChooseRunConfiguration",
+    "command": "workbench.action.debug.selectandstart"
+  },
+  {
+    "action": "ChooseDebugConfiguration",
+    "command": "workbench.action.debug.selectandstart"
+  },
+  {
+    "action": "Rerun",
+    "command": "workbench.action.debug.restart",
+    "when": "inDebugMode"
+  },
+  {
+    "action": "Stop",
+    "command": "workbench.action.debug.stop",
+    "when": "inDebugMode"
+  },
+  {
+    "action": "Resume",
+    "command": "workbench.action.debug.continue",
+    "when": "debugState == 'stopped'"
+  },
+  {
+    "action": "StepOver",
+    "command": "workbench.action.debug.stepOver",
+    "when": "debugState == 'stopped'"
+  },
+  {
+    "action": "StepInto",
+    "command": "workbench.action.debug.stepInto",
+    "when": "debugState == 'stopped'"
+  },
+  {
+    "action": "StepOut",
+    "command": "workbench.action.debug.stepOut",
+    "when": "debugState == 'stopped'"
+  },
+  {
+    "action": "RunToCursor",
+    "command": "editor.debug.action.runToCursor",
+    "when": "debugState == 'stopped'"
+  },
+  {
+    "action": "EvaluateExpression",
+    "command": "editor.debug.action.selectionToRepl",
+    "when": "inDebugMode && editorTextFocus"
+  },
+  {
+    "action": "ToggleLineBreakpoint",
+    "command": "editor.debug.action.toggleBreakpoint",
+    "when": "debuggersAvailable && editorTextFocus"
+  },
+  {
+    "action": "ViewBreakpoints",
+    "command": "workbench.view.debug"
+  },
+  {
+    "action": "CompileDirty",
+    "command": "workbench.action.tasks.build"
+  },
+  {
+    "action": "CheckinProject",
+    "command": "workbench.view.scm"
+  },
+  {
+    "action": "Vcs.Push",
+    "command": "git.push"
+  },
+  {
+    "action": "Vcs.UpdateProject",
+    "command": "git.pull"
+  },
+  {
+    "action": "Vcs.RollbackChangedLines",
+    "command": "git.revertSelectedRanges",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "VcsShowNextChangeMarker",
+    "command": "workbench.action.editor.nextChange",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "VcsShowPrevChangeMarker",
+    "command": "workbench.action.editor.previousChange",
+    "when": "editorTextFocus"
+  },
+  {
+    "action": "Diff.ShowDiff",
+    "command": "git.openChange"
+  },
+  {
+    "action": "NextDiff",
+    "command": "workbench.action.compareEditor.nextChange",
+    "when": "textCompareEditorVisible"
+  },
+  {
+    "action": "PreviousDiff",
+    "command": "workbench.action.compareEditor.previousChange",
+    "when": "textCompareEditorVisible"
+  }
+]
