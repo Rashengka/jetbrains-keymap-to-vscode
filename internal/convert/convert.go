@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/keymap"
+	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/layout"
 )
 
 //go:embed actions.json
@@ -82,21 +83,47 @@ type KeyError struct {
 
 func (e *KeyError) Error() string { return fmt.Sprintf("%s: %s", e.Keystroke, e.Reason) }
 
+// charKeys are JetBrains key names that stand for a character whose position
+// depends on the keyboard layout.
+var charKeys = map[string]rune{
+	"plus": '+', "left_parenthesis": '(', "right_parenthesis": ')', "quotedbl": '"',
+	"colon": ':', "exclamation_mark": '!', "at": '@', "number_sign": '#', "dollar": '$',
+	"circumflex": '^', "ampersand": '&', "asterisk": '*', "underscore": '_', "less": '<',
+	"greater": '>', "braceleft": '{', "braceright": '}', "euro_sign": '€',
+	"inverted_exclamation_mark": '¡',
+	"dead_diaeresis":            '¨', "dead_acute": '´', "dead_caron": 'ˇ', "dead_grave": '`',
+	"dead_circumflex": '^', "dead_tilde": '~', "dead_cedilla": '¸', "dead_abovering": '°',
+}
+
 // Key converts one normalized IntelliJ keystroke to VS Code syntax, e.g. "shift meta z" -> "shift+cmd+z".
-func Key(k keymap.Keystroke, p Platform) (string, error) {
+// When lay is not nil, characters that depend on the keyboard layout are bound
+// to the physical key that types them, e.g. "meta #100011b" (ě) -> "cmd+[Digit2]".
+func Key(k keymap.Keystroke, p Platform, lay *layout.Layout) (string, error) {
 	mods, key := k.Split()
 	if key == "" {
 		return "", &KeyError{k, "no key"}
 	}
-	vsKey, err := convertKey(key)
-	if err != nil {
-		return "", &KeyError{k, err.Error()}
-	}
-	var out []string
 	has := map[string]bool{}
 	for _, m := range mods {
 		has[m] = true
 	}
+	vsKey, err := convertKey(key)
+	if err != nil && lay != nil {
+		if r, ok := keyChar(key); ok {
+			if pk, found := lay.Find(r); found {
+				vsKey, err = "["+pk.Code+"]", nil
+				if pk.Shift {
+					has["shift"] = true
+				}
+			} else {
+				err = fmt.Errorf("%q is not on the %s keyboard layout", string(r), lay.Name())
+			}
+		}
+	}
+	if err != nil {
+		return "", &KeyError{k, err.Error()}
+	}
+	var out []string
 	if has["altgraph"] {
 		return "", &KeyError{k, "AltGr is not supported by VS Code keybindings"}
 	}
@@ -150,6 +177,20 @@ func convertKey(key string) (string, error) {
 	return "", fmt.Errorf("layout-dependent or unsupported key %q", key)
 }
 
+// keyChar returns the character a layout-dependent JetBrains key stands for.
+func keyChar(key string) (rune, bool) {
+	if r, ok := charKeys[key]; ok {
+		return r, true
+	}
+	var v int
+	if strings.HasPrefix(key, "#") {
+		if _, err := fmt.Sscanf(key, "#%x", &v); err == nil && v >= 0x1000000 {
+			return rune(v - 0x1000000), true
+		}
+	}
+	return 0, false
+}
+
 // describeCodepoint turns "#1000161" into "U+0161 'š'". IntelliJ stores characters
 // without their own key code as 0x1000000 + code point.
 func describeCodepoint(key string) string {
@@ -162,15 +203,15 @@ func describeCodepoint(key string) string {
 }
 
 // Chord converts a shortcut including an optional second keystroke.
-func Chord(s keymap.Shortcut, p Platform) (string, error) {
-	first, err := Key(s.First, p)
+func Chord(s keymap.Shortcut, p Platform, lay *layout.Layout) (string, error) {
+	first, err := Key(s.First, p, lay)
 	if err != nil {
 		return "", err
 	}
 	if s.Second == "" {
 		return first, nil
 	}
-	second, err := Key(s.Second, p)
+	second, err := Key(s.Second, p, lay)
 	if err != nil {
 		return "", err
 	}
@@ -212,8 +253,9 @@ type Conflict struct {
 	Bindings []Binding
 }
 
-// Convert builds VS Code keybindings for the selection.
-func Convert(sel keymap.Selection, t Table, p Platform) Result {
+// Convert builds VS Code keybindings for the selection. lay may be nil when
+// the keyboard layout is unknown; layout-dependent keys are then reported.
+func Convert(sel keymap.Selection, t Table, p Platform, lay *layout.Layout) Result {
 	var r Result
 	for _, e := range sel.Entries {
 		for _, m := range e.Shortcuts.Mouse {
@@ -224,7 +266,7 @@ func Convert(sel keymap.Selection, t Table, p Platform) Result {
 		}
 		maps := t[e.Action]
 		for _, s := range e.Shortcuts.Keys {
-			key, err := Chord(s, p)
+			key, err := Chord(s, p, lay)
 			if err != nil {
 				r.BadKeys = append(r.BadKeys, Skipped{e.Action, s.String(), err.(*KeyError).Reason})
 				continue

@@ -94,9 +94,37 @@ bundled keymaps are. `custom` works with only the configuration directory.
 | `--target NAME` | `code` (default), `insiders`, `vscodium` or `cursor` |
 | `--keybindings PATH` | Write to this file instead of the target's `keybindings.json` |
 | `--keymap NAME` | Read this keymap instead of the one active in the IDE |
+| `--layout NAME` | Keyboard layout for character shortcuts: `auto` (default, macOS), `none`, `cz`, `cz-qwerty`, `sk`, `sk-qwerty` |
 | `--config-root DIR` | Directory with JetBrains configuration directories |
 | `--ide-home DIR` | IDE installation directory (the one containing `lib/`) |
 | `-v` | Show the exact JSON block and list every skipped shortcut (with `restore`: list the keybindings it adds and removes) |
+
+## Keyboard layouts
+
+JetBrains stores some shortcuts as the character they type: `+`, `)`, `§` or
+national letters such as `ě` or `š`. On a Czech keyboard, `Cmd+ě` is stored as
+"Cmd + the character ě". VS Code can bind a physical key regardless of the
+layout (`cmd+[Digit2]`). So the tool needs to know which key types the
+character.
+
+- On macOS the tool asks the system for the current layout (`--layout auto`,
+  the default) and looks the character up in a table for that layout.
+- The tables are generated from the layouts installed in macOS by
+  `tools/gen-mac-layouts.swift`. They are not written by hand.
+- Included: Czech (QWERTZ and QWERTY) and Slovak (QWERTZ and QWERTY).
+  `--layout cz-qwerty` and similar names override the detected layout.
+  `--layout none` turns the lookup off.
+- Letters and the keys that VS Code already understands (`-`, `/`, `[`, …) are
+  written as before. VS Code maps them through the active layout itself.
+- On Linux and Windows, and for layouts without a table, these shortcuts are
+  reported instead of converted.
+
+Adding a macOS layout means adding its input source id to the generator and
+running it again:
+
+```sh
+swift tools/gen-mac-layouts.swift > internal/layout/mac.json
+```
 
 ## What is not converted
 
@@ -107,9 +135,8 @@ The report lists all of these:
   refactoring, debugging and version-control actions. Many JetBrains actions
   have no equivalent in VS Code.
 - **Mouse shortcuts.** VS Code keybindings cannot use the mouse.
-- **Keys that depend on the keyboard layout.** JetBrains stores keys such as
-  `+`, `(` or national characters (`š`, `ě`, `ú`, …) as characters. VS Code
-  binds physical keys, so these cannot be converted reliably.
+- **Keys that depend on the keyboard layout, when the layout is unknown.** See
+  [Keyboard layouts](#keyboard-layouts).
 - **Removed defaults.** If you removed a default shortcut in JetBrains, the tool
   reports it but leaves VS Code's own default shortcuts alone.
 

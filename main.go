@@ -20,6 +20,7 @@ import (
 	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/convert"
 	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/ide"
 	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/keymap"
+	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/layout"
 	"github.com/Rashengka/jetbrains-keymap-to-vscode/internal/vscode"
 )
 
@@ -203,6 +204,7 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	scopeName := fs.String("scope", "custom", "custom: only your changes; all: defaults plus your changes; default: defaults without your changes")
 	keymapName := fs.String("keymap", "", "keymap to read (default: the one active in the IDE)")
 	platform := fs.String("platform", runtime.GOOS, "modifier names for: darwin, windows or linux")
+	layoutName := fs.String("layout", "auto", "keyboard layout for keys like Cmd+ě: auto (ask macOS), none, or "+strings.Join(layout.Names(), ", "))
 	apply := fs.Bool("apply", false, "write keybindings.json (without it nothing is written)")
 	verbose := fs.Bool("v", false, "show the exact JSON block and every skipped shortcut")
 	if err := fs.Parse(args); err != nil {
@@ -254,7 +256,11 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	if err != nil {
 		return err
 	}
-	res := convert.Convert(sel, convert.DefaultTable(), convert.Platform(*platform))
+	lay, layoutNote, err := chooseLayout(*layoutName, *platform)
+	if err != nil {
+		return err
+	}
+	res := convert.Convert(sel, convert.DefaultTable(), convert.Platform(*platform), lay)
 
 	path, err := t.path()
 	if err != nil {
@@ -271,7 +277,11 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 			Key:     b.Key, Command: b.Command, When: b.When, Args: b.Args,
 		})
 	}
-	header := fmt.Sprintf("generated from %s %s, keymap %q, scope %s; edits inside this block are replaced on the next run", chosen.DisplayName(), chosen.Config.Version, active, scope)
+	layoutPart := ""
+	if lay != nil {
+		layoutPart = ", layout " + lay.Name()
+	}
+	header := fmt.Sprintf("generated from %s %s, keymap %q, scope %s%s; edits inside this block are replaced on the next run", chosen.DisplayName(), chosen.Config.Version, active, scope, layoutPart)
 	updated, err := vscode.Apply(current, entries, header)
 	if err != nil {
 		return fmt.Errorf("%s: %w", path, err)
@@ -289,7 +299,7 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 	if sel.Base != "" && sel.Base != sel.Keymap {
 		fmt.Fprintf(stdout, " (based on %q)", sel.Base)
 	}
-	fmt.Fprintf(stdout, "\nScope:   %s\nTarget:  %s\n\n", scope, path)
+	fmt.Fprintf(stdout, "\nScope:   %s\nLayout:  %s\nTarget:  %s\n\n", scope, layoutNote, path)
 
 	if *verbose {
 		fmt.Fprintln(stdout, "Block in keybindings.json:")
@@ -321,6 +331,36 @@ func cmdConvert(args []string, stdin io.Reader, stdout, stderr io.Writer) error 
 		fmt.Fprintf(stdout, "Written: %s\n", path)
 	}
 	return nil
+}
+
+// chooseLayout resolves --layout. The tables describe macOS layouts, so they
+// are only used for macOS keybindings.
+func chooseLayout(name, platform string) (*layout.Layout, string, error) {
+	switch name {
+	case "none", "":
+		return nil, "none (layout-dependent keys are reported, not converted)", nil
+	case "auto":
+		if platform != string(convert.Mac) || runtime.GOOS != "darwin" {
+			return nil, "unknown (tables exist for macOS only; layout-dependent keys are reported)", nil
+		}
+		id := layout.DetectMac()
+		if id == "" {
+			return nil, "unknown (macOS did not report it; use --layout)", nil
+		}
+		lay, err := layout.Get(id)
+		if err != nil {
+			return nil, fmt.Sprintf("%s from macOS has no table (layout-dependent keys are reported)", id), nil
+		}
+		return lay, lay.Name() + " (from macOS)", nil
+	}
+	if platform != string(convert.Mac) {
+		return nil, "", fmt.Errorf("--layout %s: layout tables exist for macOS only", name)
+	}
+	lay, err := layout.Get(name)
+	if err != nil {
+		return nil, "", err
+	}
+	return lay, lay.Name(), nil
 }
 
 // bindingTable is the short form of the block: one line per keybinding.

@@ -21,6 +21,7 @@ const fxMac = `<keymap version="1" name="Mac OS X 10.5+" parent="$default">
 
 const fxUser = `<keymap version="1" name="Custom" parent="Mac OS X 10.5+">
   <action id="EditorDuplicate"><keyboard-shortcut first-keystroke="shift meta D"/></action>
+  <action id="GotoFile"><keyboard-shortcut first-keystroke="meta #100011b"/></action>
 </keymap>`
 
 const fxUserKeybindings = `// my file
@@ -82,7 +83,7 @@ func (f fixture) run(t *testing.T, args ...string) (string, int) {
 
 func (f fixture) convertArgs(extra ...string) []string {
 	return append([]string{"convert", "--config-root", f.configRoot, "--ide-home", f.ideHome,
-		"--keybindings", f.keybindings, "--ide", "testide", "--keymap", "Custom", "--platform", "darwin"}, extra...)
+		"--keybindings", f.keybindings, "--ide", "testide", "--keymap", "Custom", "--platform", "darwin", "--layout", "none"}, extra...)
 }
 
 func TestConvertDryRunWritesNothing(t *testing.T) {
@@ -162,6 +163,27 @@ func TestConvertVerboseShowsJSONBlock(t *testing.T) {
 	out, _ = f.run(t, f.convertArgs("-v")...)
 	if !strings.Contains(out, `"key": "shift+cmd+d"`) {
 		t.Errorf("-v must show the JSON block: %s", out)
+	}
+}
+
+func TestConvertLayoutDependentKeys(t *testing.T) {
+	f := newFixture(t)
+	out, _ := f.run(t, f.convertArgs()...) // --layout none
+	if !strings.Contains(out, "U+011B") || strings.Contains(out, "[Digit2]") {
+		t.Errorf("without a layout the key must be reported:\n%s", out)
+	}
+	out, code := f.run(t, f.convertArgs("--layout", "cz-qwerty")...)
+	if code != 0 || !strings.Contains(out, "cmd+[Digit2]") || !strings.Contains(out, "Layout:  Czech-QWERTY") {
+		t.Errorf("with cz-qwerty ě must become cmd+[Digit2]:\n%s", out)
+	}
+	args := f.convertArgs("--layout", "cz-qwerty")
+	for i, a := range args {
+		if a == "darwin" {
+			args[i] = "windows"
+		}
+	}
+	if out, code := f.run(t, args...); code == 0 || !strings.Contains(out, "macOS only") {
+		t.Errorf("layout tables must be refused for other platforms: %d %s", code, out)
 	}
 }
 
